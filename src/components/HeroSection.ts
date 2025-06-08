@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function HeroSection(
 	props?: {
@@ -7,7 +7,7 @@ export function HeroSection(
 		height?: string;
 		overlayColor?: string;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const bgImage = props?.backgroundImage
 		? `background-image: url('${props.backgroundImage}');`
@@ -48,7 +48,7 @@ export function HeroSection(
         box-sizing: border-box;
       "
 			>
-				${renderFn(children)}
+				${renderFnOrArray(children)}
 			</div>
 		</div>
 	`;

@@ -1,19 +1,15 @@
-import { html } from "lit";
-import { renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { type renderFnOrArrayType, renderFnOrArray } from "./core";
 
 export function AvatarStack(
 	props?: { size?: string; overlap?: string },
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const sz = props?.size ?? "32px";
 	const ov = props?.overlap ?? "-8px";
-	return html`
-		<div style="display: flex; align-items: center;">
-			${typeof children === "function"
-				? (children() as any).map(
-						(avatar: unknown, idx: number) => html`
-							<div
-								style="
+	const injectBox = (avatar: TemplateResult, idx?: number) => html`
+		<div
+			style="
               width: ${sz};
               height: ${sz};
               border-radius: 50%;
@@ -22,12 +18,13 @@ export function AvatarStack(
               margin-left: ${idx === 0 ? "0" : ov};
               box-sizing: content-box;
             "
-							>
-								${avatar}
-							</div>
-						`
-				  )
-				: html``}
+		>
+			${avatar}
+		</div>
+	`;
+	return html`
+		<div style="display: flex; align-items: center;">
+			${renderFnOrArray(children, injectBox)}
 		</div>
 	`;
 }

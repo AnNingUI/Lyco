@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function AspectRatio(
 	props: {
@@ -8,7 +8,7 @@ export function AspectRatio(
 		background?: string;
 		overflow?: string;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const paddingTop = `${100 / props.ratio}%`;
 	const mw = props.maxWidth ? `max-width: ${props.maxWidth};` : "";
@@ -35,7 +35,7 @@ export function AspectRatio(
         height: 100%;
       "
 			>
-				${renderFn(children)}
+				${renderFnOrArray(children)}
 			</div>
 		</div>
 	`;

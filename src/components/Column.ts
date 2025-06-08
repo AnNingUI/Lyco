@@ -1,9 +1,9 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function Column(
 	props?: { space?: string | number },
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	return html`
 		<div
@@ -13,7 +13,7 @@ export function Column(
       ${props?.space ? `gap: ${props.space};` : ""}
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

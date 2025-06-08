@@ -1,9 +1,9 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function Grid(
 	props?: { columns?: number; gap?: string | number },
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const cols = props?.columns ?? 1;
 	return html`
@@ -14,7 +14,7 @@ export function Grid(
       ${props?.gap ? `gap: ${props.gap};` : ""}
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

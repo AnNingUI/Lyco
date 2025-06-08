@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function Wrap(
 	props?: {
@@ -8,7 +8,7 @@ export function Wrap(
 		align?: string;
 		justify?: string;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const dir = props?.direction ?? "row";
 	return html`
@@ -22,7 +22,7 @@ export function Wrap(
       ${props?.justify ? `justify-content: ${props.justify};` : ""}
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

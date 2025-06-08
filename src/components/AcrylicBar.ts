@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function AcrylicBar(
 	props?: {
@@ -15,7 +15,7 @@ export function AcrylicBar(
 		padding?: string; // 内边距，默认 "16px"
 		zIndex?: number; // z-index，默认 1000
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const w = props?.width ?? "300px";
 	const h = props?.height ?? "auto";
@@ -53,7 +53,7 @@ export function AcrylicBar(
       flex-direction: column;
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

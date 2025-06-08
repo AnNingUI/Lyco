@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function SideBarContainer(
 	props?: {
@@ -7,7 +7,7 @@ export function SideBarContainer(
 		sidebarPosition?: "left" | "right";
 		gap?: string | number;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const width = props?.sidebarWidth ?? "240px";
 	const pos = props?.sidebarPosition ?? "left";
@@ -22,7 +22,7 @@ export function SideBarContainer(
 		sidebarContent = arr[0] ?? html``;
 		mainContent = arr[1] ?? html``;
 	} else {
-		mainContent = renderFn(children) as any;
+		mainContent = renderFnOrArray(children) as any;
 	}
 
 	return html`

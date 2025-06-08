@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function Container(
 	props?: {
@@ -8,7 +8,7 @@ export function Container(
 		background?: string;
 		fullHeight?: boolean;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const mw = props?.maxWidth ?? "1024px";
 	const pad = props?.padding ?? "0 16px";
@@ -28,7 +28,7 @@ export function Container(
       box-sizing: border-box;
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

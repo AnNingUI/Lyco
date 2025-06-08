@@ -1,9 +1,9 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
 export function Overlay(
 	props?: { background?: string; zIndex?: number; fullScreen?: boolean },
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const bg = props?.background ?? "rgba(0, 0, 0, 0.5)";
 	const z = props?.zIndex ?? 1000;
@@ -20,7 +20,7 @@ export function Overlay(
       align-items: center;
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

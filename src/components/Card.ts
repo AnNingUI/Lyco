@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFn, renderFnType, renderFnOrArrayType, renderFnOrArray } from "./core";
 
 export function Card(
 	props?: {
@@ -8,7 +8,7 @@ export function Card(
 		shadow?: string;
 		background?: string;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const pd = props?.padding ?? "16px";
 	const br = props?.borderRadius ?? "8px";
@@ -24,7 +24,7 @@ export function Card(
       box-sizing: border-box;
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }

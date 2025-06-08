@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { renderFn, renderFnType, renderFnOrArrayType, renderFnOrArray } from "./core";
 
 export function ZStack(
 	props?: {
@@ -13,7 +13,7 @@ export function ZStack(
 			| "bottom-left"
 			| "bottom-right";
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const w = props?.width ? `width: ${props.width};` : "";
 	const h = props?.height ? `height: ${props.height};` : "";
@@ -54,7 +54,7 @@ export function ZStack(
       ${w} ${h} ${bg}
     "
 		>
-			${renderFn(children)}
+			${renderFnOrArray(children)}
 		</div>
 	`;
 }
