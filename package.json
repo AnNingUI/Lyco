@@ -1,0 +1,44 @@
+{
+	"name": "lyco",
+	"version": "1.0.0",
+	"description": "基于 Lit 的纯 CSS 布局渲染函数库，包含 Row/Column/Flex/Grid/拆分布局/滚动/轮播等常用渲染函数。",
+	"scripts": {
+		"build": "vite build"
+	},
+	"keywords": [
+		"lit",
+		"layout",
+		"components",
+		"css",
+		"typescript",
+		"npm",
+		"flex",
+		"grid"
+	],
+	"author": "AnNingUI <an3533581512@gmail.com>",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AnNingUI/lyco.git"
+	},
+	"bugs": {
+		"url": "https://github.com/AnNingUI/lyco/issues"
+	},
+	"homepage": "https://github.com/AnNingUI/lyco#readme",
+	"main": "dist/index.cjs.js",
+	"module": "dist/index.es.js",
+	"types": "dist/types/index.d.ts",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"dependencies": {
+		"lit": "^3.3.0",
+		"vite": "npm:rolldown-vite@^6.3.18",
+		"vite-plugin-dts": "^4.5.4"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.30"
+	}
+}

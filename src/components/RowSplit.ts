@@ -1,0 +1,40 @@
+import { html } from "lit";
+import { renderFn, renderFnType } from "./core";
+
+export function RowSplit(
+	props?: {
+		firstWidth?: string; // 第一个面板固定宽度或百分比
+		gap?: string | number;
+	},
+	children?: renderFnType
+) {
+	const gap = props?.gap ?? "0px";
+	const firstW = props?.firstWidth ?? "50%";
+
+	let leftNode = html``;
+	let rightNode = html``;
+
+	if (typeof children === "function") {
+		// @ts-ignore
+		const arr = (children as any).call?.(null) ?? [];
+		leftNode = arr[0] ?? html``;
+		rightNode = arr[1] ?? html``;
+	} else {
+		leftNode = renderFn(children) as any;
+	}
+
+	return html`
+		<div
+			style="
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      gap: ${gap};
+    "
+		>
+			<div style="flex: 0 0 ${firstW}; overflow: auto;">${leftNode}</div>
+			<div style="flex: 1 1 auto; overflow: auto;">${rightNode}</div>
+		</div>
+	`;
+}
