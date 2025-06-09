@@ -1,32 +1,33 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { randomClassName, renderFn, renderFnType } from "./core";
 
 export function Table(
-	props?: { striped?: boolean; hover?: boolean; bordered?: boolean },
-	children?: renderFnType
+	props?: { striped?: boolean; hover?: boolean; bordered?: boolean, className?: string },
+	children?: renderFnType,
 ) {
+	const _className = props?.className ?? randomClassName("table");
 	const striped = props?.striped
 		? `
-    tr:nth-child(even) { background: #f9f9f9; }
+    .${_className} tr:nth-child(even) { background: #f9f9f9; }
   `
 		: "";
 	const hover = props?.hover
 		? `
-    tr:hover { background: #f1f1f1; }
+    .${_className} tr:hover { background: #f1f1f1; }
   `
 		: "";
 	const bordered = props?.bordered
 		? `
-      table, th, td { border: 1px solid #ddd; }
+      .${_className} table, .${_className} th, .${_className} td { border: 1px solid #ddd; }
     `
 		: "";
 	return html`
 		<style>
-			table {
+			.${_className} table {
 			  width: 100%;
 			  border-collapse: collapse;
 			}
-			th, td {
+			.${_className} th, .${_className} td {
 			  padding: 8px 12px;
 			  text-align: left;
 			}
@@ -34,7 +35,7 @@ export function Table(
 			${hover}
 			${bordered}
 		</style>
-		<table>
+		<table class="table">
 			${renderFn(children)}
 		</table>
 	`;

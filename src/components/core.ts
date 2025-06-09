@@ -34,3 +34,8 @@ export function renderFnOrArray(
 		return _injectBox(renderFn(result));
 	}
 }
+
+export function randomClassName(prefix?: string): string {
+	const random = Math.random().toString(36).substring(2, 15);
+	return prefix ? `lyco-${prefix}-${random}` : `lyco-${random}`;
+}

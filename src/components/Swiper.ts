@@ -1,5 +1,5 @@
 import { html, TemplateResult, unsafeCSS } from "lit";
-import { renderFnType } from "./core";
+import { randomClassName, renderFnType } from "./core";
 
 export function Swiper(
 	props?: {
@@ -7,6 +7,7 @@ export function Swiper(
 		snapType?: "mandatory" | "proximity";
 		height?: string;
 		width?: string;
+		className?: string;
 	},
 	children?: renderFnType
 ) {
@@ -14,7 +15,9 @@ export function Swiper(
 	const snapType = props?.snapType ?? "mandatory";
 	const height = props?.height ?? "auto";
 	const width = props?.width ?? "100%";
-
+	const _className = props?.className ?? randomClassName("swiper");
+	const _containerClassName = _className + "-container";
+	const _slideClassName = _className + "-slide";
 	let slides: TemplateResult[] = [];
 	if (typeof children === "function") {
 		// @ts-ignore
@@ -25,7 +28,7 @@ export function Swiper(
 
 	return html`
 		<style>
-			.swiper-container {
+			.${_containerClassName} {
 				width: ${width};
 				height: ${height};
 				overflow-x: auto;
@@ -35,13 +38,15 @@ export function Swiper(
 				-webkit-overflow-scrolling: touch;
 				gap: ${unsafeCSS(gap)};
 			}
-			.swiper-slide {
+			.${_slideClassName} {
 				scroll-snap-align: start;
 				flex-shrink: 0;
 			}
 		</style>
-		<div class="swiper-container">
-			${slides.map((slide) => html` <div class="swiper-slide">${slide}</div> `)}
+		<div class="${_containerClassName}">
+			${slides.map(
+				(slide) => html` <div class="${_slideClassName}">${slide}</div> `
+			)}
 		</div>
 	`;
 }

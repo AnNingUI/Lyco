@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { randomClassName, renderFn, renderFnType } from "./core";
 
 export function ScrollBar(
 	props?: {
@@ -7,6 +7,7 @@ export function ScrollBar(
 		height?: string;
 		width?: string;
 		customCss?: string;
+		className?: string;
 	},
 	children?: renderFnType
 ) {
@@ -14,7 +15,7 @@ export function ScrollBar(
 	const h = props?.height ?? "100%";
 	const w = props?.width ?? "100%";
 	const extraCss = props?.customCss ?? "";
-
+	const _className = props?.className ?? randomClassName("scrollbar-container");
 	const overflowStyle =
 		dir === "horizontal"
 			? "overflow-x: auto; overflow-y: hidden"
@@ -22,24 +23,24 @@ export function ScrollBar(
 
 	return html`
 		<style>
-			.scrollbar-container {
+			.${_className} {
 			  ${overflowStyle};
 			  width: ${w};
 			  height: ${h};
 			}
-			.scrollbar-container::-webkit-scrollbar {
+			.${_className}::-webkit-scrollbar {
 			  width: 8px;
 			  height: 8px;
 			}
-			.scrollbar-container::-webkit-scrollbar-thumb {
+			.${_className}::-webkit-scrollbar-thumb {
 			  background-color: rgba(0, 0, 0, 0.2);
 			  border-radius: 4px;
 			}
-			.scrollbar-container::-webkit-scrollbar-track {
+			.${_className}::-webkit-scrollbar-track {
 			  background: rgba(0, 0, 0, 0.05);
 			}
 			${extraCss}
 		</style>
-		<div class="scrollbar-container">${renderFn(children)}</div>
+		<div class="${_className}">${renderFn(children)}</div>
 	`;
 }

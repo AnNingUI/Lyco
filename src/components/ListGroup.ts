@@ -1,8 +1,13 @@
 import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { randomClassName, renderFn, renderFnType } from "./core";
 
 export function ListGroup(
-	props?: { bordered?: boolean; striped?: boolean; hover?: boolean },
+	props?: {
+		bordered?: boolean;
+		striped?: boolean;
+		hover?: boolean;
+		className?: string;
+	},
 	children?: renderFnType
 ) {
 	const bordered = props?.bordered
@@ -14,25 +19,26 @@ export function ListGroup(
 	const hover = props?.hover
 		? `li:hover { background: #f1f1f1; cursor: pointer; }`
 		: "";
+	const _className = props?.className ?? randomClassName("list-group");
 	return html`
 		<style>
-			ul.list-group {
+			ul.${_className} {
 			  list-style: none;
 			  margin: 0;
 			  padding: 0;
 			  ${bordered};
 			}
-			ul.list-group li {
+			ul.${_className} li {
 			  padding: 12px 16px;
 			  ${props?.bordered ? "border-bottom: 1px solid #ddd" : ""};
 			}
-			ul.list-group li:last-child {
+			ul.${_className} li:last-child {
 			  ${props?.bordered ? "border-bottom: none" : ""};
 			}
 			${striped}
 			${hover}
 		</style>
-		<ul class="list-group">
+		<ul class="${_className}">
 			${renderFn(children)}
 		</ul>
 	`;
