@@ -1,5 +1,28 @@
-import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFn, renderFnOrCurry, renderFnType } from "./core";
+
+export function AbsoluteBox(props?: {
+	top?: string;
+	right?: string;
+	bottom?: string;
+	left?: string;
+	width?: string;
+	height?: string;
+	zIndex?: number;
+}): (children?: renderFnType) => TemplateResult<1>;
+
+export function AbsoluteBox(
+	props?: {
+		top?: string;
+		right?: string;
+		bottom?: string;
+		left?: string;
+		width?: string;
+		height?: string;
+		zIndex?: number;
+	},
+	children?: renderFnType
+): TemplateResult<1>;
 
 export function AbsoluteBox(
 	props?: {
@@ -21,17 +44,19 @@ export function AbsoluteBox(
 	const h = props?.height ? `height: ${props.height};` : "";
 	const z =
 		typeof props?.zIndex === "number" ? `z-index: ${props.zIndex};` : "";
-
-	return html`
-		<div
-			style="
+	const render = (children?: renderFnType) => {
+		return html`
+			<div
+				style="
       position: absolute;
       ${t} ${r} ${b} ${l}
       ${w} ${h}
       ${z}
     "
-		>
-			${renderFn(children)}
-		</div>
-	`;
+			>
+				${renderFn(children)}
+			</div>
+		`;
+	};
+	return renderFnOrCurry(children, render);
 }

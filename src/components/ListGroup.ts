@@ -1,5 +1,10 @@
-import { html } from "lit";
-import { randomClassName, renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import {
+	randomClassName,
+	renderFnOrArray,
+	renderFnOrArrayOrCurry,
+	renderFnOrArrayType,
+} from "./core";
 
 export function ListGroup(
 	props?: {
@@ -8,7 +13,7 @@ export function ListGroup(
 		hover?: boolean;
 		className?: string;
 	},
-	children?: renderFnType
+	children?: renderFnOrArrayType
 ) {
 	const bordered = props?.bordered
 		? `border: 1px solid #ddd; border-radius: 4px`
@@ -20,7 +25,19 @@ export function ListGroup(
 		? `li:hover { background: #f1f1f1; cursor: pointer; }`
 		: "";
 	const _className = props?.className ?? randomClassName("list-group");
-	return html`
+	const injectRender = (
+		children: TemplateResult,
+		_idx?: number,
+		isArray?: boolean,
+		_isFunc?: boolean
+	) => {
+		if (!isArray) {
+			return children;
+		} else {
+			return html` <li>${children}</li> `;
+		}
+	};
+	const render = (children: TemplateResult | TemplateResult[]) => html`
 		<style>
 			ul.${_className} {
 			  list-style: none;
@@ -39,7 +56,9 @@ export function ListGroup(
 			${hover}
 		</style>
 		<ul class="${_className}">
-			${renderFn(children)}
+			${renderFnOrArray(children, injectRender)}
 		</ul>
 	`;
+
+	return renderFnOrArrayOrCurry(children, render);
 }

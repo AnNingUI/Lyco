@@ -1,5 +1,36 @@
-import { html } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFnOrArrayOrCurry, renderFnOrArrayType } from "./core";
+
+export function AcrylicBar(props?: {
+	width?: string;
+	height?: string;
+	top?: string;
+	bottom?: string;
+	left?: string;
+	right?: string;
+	background?: string;
+	blur?: string;
+	borderRadius?: string;
+	padding?: string;
+	zIndex?: number;
+}): (children?: renderFnOrArrayType) => TemplateResult<1>;
+
+export function AcrylicBar(
+	props?: {
+		width?: string;
+		height?: string;
+		top?: string;
+		bottom?: string;
+		left?: string;
+		right?: string;
+		background?: string;
+		blur?: string;
+		borderRadius?: string;
+		padding?: string;
+		zIndex?: number;
+	},
+	children?: renderFnOrArrayType
+): TemplateResult<1>;
 
 export function AcrylicBar(
 	props?: {
@@ -31,9 +62,10 @@ export function AcrylicBar(
 	const pd = props?.padding ?? "16px";
 	const z = props?.zIndex ?? 1000;
 
-	return html`
-		<div
-			style="
+	const render = (children: TemplateResult) => {
+		return html`
+			<div
+				style="
       position: fixed;
       top: ${top};
       bottom: ${bottom};
@@ -52,8 +84,10 @@ export function AcrylicBar(
       display: flex;
       flex-direction: column;
     "
-		>
-			${renderFnOrArray(children)}
-		</div>
-	`;
+			>
+				${children}
+			</div>
+		`;
+	};
+	return renderFnOrArrayOrCurry(children, undefined, render);
 }
