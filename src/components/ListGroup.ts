@@ -11,7 +11,7 @@ export function ListGroup(props?: {
 	striped?: boolean;
 	hover?: boolean;
 	className?: string;
-}): (children?: renderFnOrArrayType) => TemplateResult<1> | TemplateResult<1>[];
+}): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function ListGroup(
 	props?: {
@@ -21,7 +21,7 @@ export function ListGroup(
 		className?: string;
 	},
 	children?: renderFnOrArrayType
-): TemplateResult<1> | TemplateResult<1>[];
+): TemplateResult<1>;
 
 export function ListGroup(
 	props?: {
