@@ -1,16 +1,32 @@
 // FooterLayout.ts
-import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFn, renderFnType, WithHtml } from "./core";
+
+interface FooterLayoutProps {
+	columns?: number;
+	gap?: string;
+	background?: string;
+	padding?: string;
+}
+
+export function FooterLayout(props?: FooterLayoutProps): WithHtml<renderFnType>;
 
 export function FooterLayout(
-	props?: {
-		columns?: number;
-		gap?: string;
-		background?: string;
-		padding?: string;
-	},
+	props?: FooterLayoutProps,
+	children?: renderFnType
+): TemplateResult<1>;
+
+export function FooterLayout(
+	props?: FooterLayoutProps,
 	children?: renderFnType
 ) {
+	if (children === undefined) {
+		const _ = (children?: renderFnType) =>
+			FooterLayout(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			FooterLayout(props, html(strings, ...values));
+		return _;
+	}
 	const cols = props?.columns ?? 4;
 	const gap = props?.gap ?? "24px";
 	const bg = props?.background ?? "#f8f8f8";

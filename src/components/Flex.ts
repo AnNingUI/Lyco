@@ -1,15 +1,26 @@
-import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFn, renderFnType, WithHtml } from "./core";
+interface FlexProps {
+	direction?: "row" | "column";
+	justify?: string;
+	align?: string;
+	gap?: string | number;
+}
+
+export function Flex(props?: FlexProps): WithHtml<renderFnType>;
 
 export function Flex(
-	props?: {
-		direction?: "row" | "column";
-		justify?: string;
-		align?: string;
-		gap?: string | number;
-	},
+	props?: FlexProps,
 	children?: renderFnType
-) {
+): TemplateResult<1>;
+
+export function Flex(props?: FlexProps, children?: renderFnType) {
+	if (children === undefined) {
+		const _ = (children: renderFnType) => Flex(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			Flex(props, html(strings, ...values));
+		return _;
+	}
 	const dir = props?.direction ?? "row";
 	return html`
 		<div

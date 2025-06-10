@@ -1,10 +1,24 @@
-import { html } from "lit";
+import { html, TemplateResult } from "lit";
 import { renderFnOrArray, renderFnOrArrayType } from "./core";
+
+export function Grid(props?: {
+	columns?: number;
+	gap?: string | number;
+}): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function Grid(
 	props?: { columns?: number; gap?: string | number },
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function Grid(
+	props?: { columns?: number; gap?: string | number },
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
+	if (children === undefined) {
+		return (children) => Grid(props, children ?? [html``]);
+	}
+
 	const cols = props?.columns ?? 1;
 	return html`
 		<div

@@ -1,5 +1,11 @@
-import { html } from "lit";
+import { html, TemplateResult } from "lit";
 import { renderFnOrArray, renderFnOrArrayType } from "./core";
+
+export function HeroSection(props?: {
+	backgroundImage?: string;
+	height?: string;
+	overlayColor?: string;
+}): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function HeroSection(
 	props?: {
@@ -8,7 +14,20 @@ export function HeroSection(
 		overlayColor?: string;
 	},
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function HeroSection(
+	props?: {
+		backgroundImage?: string;
+		height?: string;
+		overlayColor?: string;
+	},
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
+	if (children === undefined) {
+		return (children) => HeroSection(props, children ?? [html``]);
+	}
+
 	const bgImage = props?.backgroundImage
 		? `background-image: url('${props.backgroundImage}');`
 		: "";

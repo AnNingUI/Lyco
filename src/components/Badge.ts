@@ -1,17 +1,32 @@
 // Badge.ts
-import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFn, renderFnType, WithHtml } from "./core";
+
+interface BadgeProps {
+	content?: string | number;
+	position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+	size?: string;
+	background?: string;
+	color?: string;
+}
+
+export function Badge(props?: BadgeProps): WithHtml<renderFnType>;
 
 export function Badge(
-	props?: {
-		content?: string | number;
-		position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-		size?: string;
-		background?: string;
-		color?: string;
-	},
+	props?: BadgeProps,
 	children?: renderFnType
-) {
+): TemplateResult<1>;
+
+export function Badge(
+	props?: BadgeProps,
+	children?: renderFnType
+): TemplateResult<1> | WithHtml<renderFnType> {
+	if (children === undefined) {
+		const _ = (children?: renderFnType) => Badge(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			Badge(props, html(strings, ...values));
+		return _;
+	}
 	const pos = props?.position ?? "top-right";
 	const size = props?.size ?? "16px";
 	const bg = props?.background ?? "red";

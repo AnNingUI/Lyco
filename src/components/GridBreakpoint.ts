@@ -1,15 +1,34 @@
-import { html } from "lit";
-import { randomClassName, renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { randomClassName, renderFn, renderFnType, WithHtml } from "./core";
+
+export type GridBreakpointProps = {
+	breakpoints: Record<string, number>;
+	defaultColumns?: number;
+	gap?: string;
+	className?: string;
+};
 
 export function GridBreakpoint(
-	props: {
-		breakpoints: Record<string, number>;
-		defaultColumns?: number;
-		gap?: string;
-		className?: string;
-	},
+	props: GridBreakpointProps
+): WithHtml<renderFnType>;
+
+export function GridBreakpoint(
+	props: GridBreakpointProps,
 	children?: renderFnType
-) {
+): TemplateResult<1>;
+
+export function GridBreakpoint(
+	props: GridBreakpointProps,
+	children?: renderFnType
+): TemplateResult<1> | WithHtml<renderFnType> {
+	if (children === undefined) {
+		const _ = (children?: renderFnType) =>
+			GridBreakpoint(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			GridBreakpoint(props, html(strings, ...values));
+		return _;
+	}
+
 	const defCols = props.defaultColumns ?? 1;
 	const gap = props.gap ?? "16px";
 	const _className = props.className ?? randomClassName("grid-breakpoint");

@@ -6,6 +6,23 @@ import {
 	renderFnOrArrayType,
 } from "./core";
 
+export function ListGroup(props?: {
+	bordered?: boolean;
+	striped?: boolean;
+	hover?: boolean;
+	className?: string;
+}): (children?: renderFnOrArrayType) => TemplateResult<1> | TemplateResult<1>[];
+
+export function ListGroup(
+	props?: {
+		bordered?: boolean;
+		striped?: boolean;
+		hover?: boolean;
+		className?: string;
+	},
+	children?: renderFnOrArrayType
+): TemplateResult<1> | TemplateResult<1>[];
+
 export function ListGroup(
 	props?: {
 		bordered?: boolean;
@@ -26,7 +43,7 @@ export function ListGroup(
 		: "";
 	const _className = props?.className ?? randomClassName("list-group");
 	const injectRender = (
-		children: TemplateResult,
+		children: TemplateResult<1>,
 		_idx?: number,
 		isArray?: boolean,
 		_isFunc?: boolean
@@ -37,7 +54,7 @@ export function ListGroup(
 			return html` <li>${children}</li> `;
 		}
 	};
-	const render = (children: TemplateResult | TemplateResult[]) => html`
+	const render = (children: TemplateResult<1> | TemplateResult<1>[]) => html`
 		<style>
 			ul.${_className} {
 			  list-style: none;

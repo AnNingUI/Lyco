@@ -1,25 +1,32 @@
 import { html, TemplateResult } from "lit";
 
-export type renderFnType = TemplateResult | (() => TemplateResult);
+export type renderFnType = TemplateResult<1> | (() => TemplateResult<1>);
 
 export type renderFnOrArrayType =
 	| renderFnType
-	| Array<TemplateResult>
-	| (() => TemplateResult[]);
+	| Array<TemplateResult<1>>
+	| (() => TemplateResult<1>[]);
 
-export function renderFn(fn?: renderFnType): TemplateResult {
+export function renderFn(fn?: renderFnType): TemplateResult<1> {
 	return fn ? (typeof fn === "function" ? fn() : fn) : html``;
 }
+
+export type WithHtml<K> = ((children?: K) => TemplateResult<1>) & {
+	html: (
+		strings: TemplateStringsArray,
+		...values: unknown[]
+	) => TemplateResult<1>;
+};
 
 export function renderFnOrArray(
 	fnOrArray?: renderFnOrArrayType,
 	injectBox?: (
-		box: TemplateResult,
+		box: TemplateResult<1>,
 		idx?: number,
 		isArray?: boolean,
 		isFunc?: boolean
-	) => TemplateResult
-): TemplateResult | TemplateResult[] {
+	) => TemplateResult<1>
+): TemplateResult<1> | TemplateResult<1>[] {
 	let _injectBox = injectBox ?? ((box) => box);
 	if (fnOrArray === undefined) {
 		return html``;
@@ -49,36 +56,34 @@ export function randomClassName(prefix?: string): string {
 
 export function renderFnOrCurry(
 	fn?: renderFnType,
-	injectBox?: (box: TemplateResult) => TemplateResult
-): TemplateResult | ((fn?: renderFnType) => TemplateResult) {
+	injectBox?: (box: TemplateResult<1>) => TemplateResult<1>
+): TemplateResult<1> | ((fn?: renderFnType) => TemplateResult<1>) {
 	const _injectBox = injectBox ?? ((box) => box);
-	if (fn) {
-		return _injectBox(renderFn(fn));
-	} else {
-		return (fn?: renderFnType) => _injectBox(renderFn(fn));
-	}
+	const curriedFn = (f?: renderFnType) => _injectBox(renderFn(f!));
+
+	return fn ? curriedFn(fn) : curriedFn;
 }
 
 export function renderFnOrArrayOrCurry(
 	fnOrArray?: renderFnOrArrayType,
 	injectBox?: (
-		box: TemplateResult | TemplateResult[]
-	) => TemplateResult | TemplateResult[],
+		box: TemplateResult<1> | TemplateResult<1>[]
+	) => TemplateResult<1> | TemplateResult<1>[],
 	injectBox2?: (
-		box: TemplateResult,
+		box: TemplateResult<1>,
 		idx?: number,
 		isArray?: boolean,
 		isFunc?: boolean
-	) => TemplateResult
+	) => TemplateResult<1>
 ):
-	| TemplateResult
-	| TemplateResult[]
-	| ((fnOrArray?: renderFnOrArrayType) => TemplateResult | TemplateResult[]) {
+	| TemplateResult<1>
+	| TemplateResult<1>[]
+	| ((
+			fnOrArray?: renderFnOrArrayType
+	  ) => TemplateResult<1> | TemplateResult<1>[]) {
 	const _injectBox = injectBox ?? ((box) => box);
-	if (fnOrArray) {
-		return _injectBox(renderFnOrArray(fnOrArray, injectBox2));
-	} else {
-		return (fnOrArray?: renderFnOrArrayType) =>
-			_injectBox(renderFnOrArray(fnOrArray, injectBox2));
-	}
+	const curriedFn = (f?: renderFnOrArrayType) =>
+		_injectBox(renderFnOrArray(f, injectBox2)!);
+
+	return fnOrArray ? curriedFn(fnOrArray) : curriedFn;
 }

@@ -1,5 +1,13 @@
-import { html } from "lit";
-import { randomClassName, renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { randomClassName, renderFn, renderFnType, WithHtml } from "./core";
+
+export function ScrollBar(props?: {
+	direction?: "vertical" | "horizontal";
+	height?: string;
+	width?: string;
+	customCss?: string;
+	className?: string;
+}): WithHtml<renderFnType>;
 
 export function ScrollBar(
 	props?: {
@@ -10,7 +18,24 @@ export function ScrollBar(
 		className?: string;
 	},
 	children?: renderFnType
-) {
+): TemplateResult<1>;
+
+export function ScrollBar(
+	props?: {
+		direction?: "vertical" | "horizontal";
+		height?: string;
+		width?: string;
+		customCss?: string;
+		className?: string;
+	},
+	children?: renderFnType
+): TemplateResult<1> | WithHtml<renderFnType> {
+	if (children === undefined) {
+		const _ = (children?: renderFnType) => ScrollBar(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			ScrollBar(props, html(strings, ...values));
+		return _;
+	}
 	const dir = props?.direction ?? "vertical";
 	const h = props?.height ?? "100%";
 	const w = props?.width ?? "100%";
