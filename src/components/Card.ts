@@ -1,15 +1,29 @@
-import { html } from "lit";
-import { renderFn, renderFnType, renderFnOrArrayType, renderFnOrArray } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
+
+interface CardProps {
+	padding?: string;
+	borderRadius?: string;
+	shadow?: string;
+	background?: string;
+}
 
 export function Card(
-	props?: {
-		padding?: string;
-		borderRadius?: string;
-		shadow?: string;
-		background?: string;
-	},
+	props?: CardProps
+): (children?: renderFnOrArrayType) => TemplateResult<1>;
+
+export function Card(
+	props?: CardProps,
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function Card(
+	props?: CardProps,
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
+	if (children === undefined) {
+		return (children) => Card(props, children ?? [html``]);
+	}
 	const pd = props?.padding ?? "16px";
 	const br = props?.borderRadius ?? "8px";
 	const sd = props?.shadow ?? "0 2px 8px rgba(0,0,0,0.1)";

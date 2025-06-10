@@ -1,5 +1,11 @@
-import { html } from "lit";
+import { html, TemplateResult } from "lit";
 import { renderFnOrArray, renderFnOrArrayType } from "./core";
+
+export function SideBarContainer(props?: {
+	sidebarWidth?: string; // 侧边栏宽度，比如 "240px"
+	sidebarPosition?: "left" | "right";
+	gap?: string | number;
+}): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function SideBarContainer(
 	props?: {
@@ -8,7 +14,20 @@ export function SideBarContainer(
 		gap?: string | number;
 	},
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function SideBarContainer(
+	props?: {
+		sidebarWidth?: string; // 侧边栏宽度，比如 "240px"
+		sidebarPosition?: "left" | "right";
+		gap?: string | number;
+	},
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
+	if (children === undefined) {
+		return (children?: renderFnOrArrayType) =>
+			SideBarContainer(props, children ?? [html``]);
+	}
 	const width = props?.sidebarWidth ?? "240px";
 	const pos = props?.sidebarPosition ?? "left";
 	const gap = props?.gap ?? "0px";

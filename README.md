@@ -1,5 +1,9 @@
 # Lyco
 
+<p align="center">
+    <a href="./README_EN.md"> English </a> | <span> 简体中文 </span>
+</p>
+
 ## 基于 Lit 的纯 CSS 布局渲染函数库
 
 `Lyco` 是一个基于 [Lit](https://lit.dev) 构建的轻量级 CSS 布局库，提供了多种常用的布局组件（如 Row, Column, Flex, Grid 等），帮助开发者更高效地构建响应式网页布局。

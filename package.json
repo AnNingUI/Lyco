@@ -1,6 +1,6 @@
 {
 	"name": "lyco",
-	"version": "1.0.2",
+	"version": "1.2.0",
 	"description": "基于 Lit 的纯 CSS 布局渲染函数库，包含 Row/Column/Flex/Grid/拆分布局/滚动/轮播等常用渲染函数。",
 	"scripts": {
 		"build": "vite build"

@@ -1,23 +1,34 @@
-import { html } from "lit";
-import { renderFn, renderFnType, renderFnOrArrayType, renderFnOrArray } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFnOrArray, renderFnOrArrayType } from "./core";
+
+interface ZStackProps {
+	width?: string;
+	height?: string;
+	background?: string;
+	align?: "top-left" | "top-right" | "center" | "bottom-left" | "bottom-right";
+}
 
 export function ZStack(
-	props?: {
-		width?: string;
-		height?: string;
-		background?: string;
-		align?:
-			| "top-left"
-			| "top-right"
-			| "center"
-			| "bottom-left"
-			| "bottom-right";
-	},
+	props?: ZStackProps
+): (children?: renderFnOrArrayType) => TemplateResult<1>;
+
+export function ZStack(
+	props?: ZStackProps,
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function ZStack(
+	props?: ZStackProps,
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
 	const w = props?.width ? `width: ${props.width};` : "";
 	const h = props?.height ? `height: ${props.height};` : "";
 	const bg = props?.background ? `background: ${props.background};` : "";
+
+	if (children === undefined) {
+		return (children?: renderFnOrArrayType) =>
+			ZStack(props, children ?? [html``]);
+	}
 
 	let justify = "flex-start";
 	let alignItems = "flex-start";

@@ -1,5 +1,18 @@
-import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFn, renderFnType, WithHtml } from "./core";
+
+export function ColumnSplit(props?: {
+	firstHeight?: string; // 第一个面板固定高度或百分比
+	gap?: string | number;
+}): WithHtml<renderFnType>;
+
+export function ColumnSplit(
+	props?: {
+		firstHeight?: string; // 第个面板固定高度或百分比
+		gap?: string | number;
+	},
+	children?: renderFnType
+): TemplateResult<1>;
 
 export function ColumnSplit(
 	props?: {
@@ -7,7 +20,14 @@ export function ColumnSplit(
 		gap?: string | number;
 	},
 	children?: renderFnType
-) {
+): TemplateResult<1> | WithHtml<renderFnType> {
+	if (children === undefined) {
+		const _ = (children?: renderFnType) =>
+			ColumnSplit(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			ColumnSplit(props, html(strings, ...values));
+		return _;
+	}
 	const gap = props?.gap ?? "0px";
 	const firstH = props?.firstHeight ?? "50%";
 

@@ -1,15 +1,29 @@
-import { html } from "lit";
+import { html, TemplateResult } from "lit";
 import { renderFnOrArray, renderFnOrArrayType } from "./core";
 
+interface AspectRatioProps {
+	ratio: number; // 宽高比，例如 16/9、4/3
+	maxWidth?: string;
+	background?: string;
+	overflow?: string;
+}
+
 export function AspectRatio(
-	props: {
-		ratio: number; // 宽高比，例如 16/9、4/3
-		maxWidth?: string;
-		background?: string;
-		overflow?: string;
-	},
+	props: AspectRatioProps
+): (children?: renderFnOrArrayType) => TemplateResult<1>;
+
+export function AspectRatio(
+	props: AspectRatioProps,
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function AspectRatio(
+	props: AspectRatioProps,
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
+	if (children === undefined) {
+		return (children) => AspectRatio(props, children ?? [html``]);
+	}
 	const paddingTop = `${100 / props.ratio}%`;
 	const mw = props.maxWidth ? `max-width: ${props.maxWidth};` : "";
 	const bg = props.background ? `background: ${props.background};` : "";

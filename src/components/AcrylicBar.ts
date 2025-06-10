@@ -1,20 +1,31 @@
-import { html } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFnOrArrayOrCurry, renderFnOrArrayType } from "./core";
+
+interface AcrylicBarProps {
+	width?: string; // 宽度，如 "300px" 或 "50%"
+	height?: string; // 高度，如 "auto" 或 "200px"
+	top?: string; // 距离顶部距离，默认 "20%"
+	bottom?: string; // 距离底部距离，默认 "auto"
+	left?: string; // 距离左侧距离，默认 "50%"
+	right?: string; // 距离右侧距离，默认 "auto"
+	background?: string; // 背景色，支持透明度，默认 "rgba(255,255,255,0.3)"
+	blur?: string; // 模糊半径，默认 "10px"
+	borderRadius?: string; // 圆角，默认 "12px"
+	padding?: string; // 内边距，默认 "16px"
+	zIndex?: number; // z-index，默认 1000
+}
 
 export function AcrylicBar(
-	props?: {
-		width?: string; // 宽度，如 "300px" 或 "50%"
-		height?: string; // 高度，如 "auto" 或 "200px"
-		top?: string; // 距离顶部距离，默认 "20%"
-		bottom?: string; // 距离底部距离，默认 "auto"
-		left?: string; // 距离左侧距离，默认 "50%"
-		right?: string; // 距离右侧距离，默认 "auto"
-		background?: string; // 背景色，支持透明度，默认 "rgba(255,255,255,0.3)"
-		blur?: string; // 模糊半径，默认 "10px"
-		borderRadius?: string; // 圆角，默认 "12px"
-		padding?: string; // 内边距，默认 "16px"
-		zIndex?: number; // z-index，默认 1000
-	},
+	props?: AcrylicBarProps
+): (children?: renderFnOrArrayType) => TemplateResult<1>;
+
+export function AcrylicBar(
+	props?: AcrylicBarProps,
+	children?: renderFnOrArrayType
+): TemplateResult<1>;
+
+export function AcrylicBar(
+	props?: AcrylicBarProps,
 	children?: renderFnOrArrayType
 ) {
 	const w = props?.width ?? "300px";
@@ -31,9 +42,10 @@ export function AcrylicBar(
 	const pd = props?.padding ?? "16px";
 	const z = props?.zIndex ?? 1000;
 
-	return html`
-		<div
-			style="
+	const render = (children: TemplateResult) => {
+		return html`
+			<div
+				style="
       position: fixed;
       top: ${top};
       bottom: ${bottom};
@@ -52,8 +64,10 @@ export function AcrylicBar(
       display: flex;
       flex-direction: column;
     "
-		>
-			${renderFnOrArray(children)}
-		</div>
-	`;
+			>
+				${children}
+			</div>
+		`;
+	};
+	return renderFnOrArrayOrCurry(children, undefined, render);
 }
