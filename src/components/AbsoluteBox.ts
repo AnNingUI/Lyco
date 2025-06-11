@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { renderFn, renderFnOrCurry, renderFnType } from "./core";
 
-export function AbsoluteBox(props?: {
+interface AbsoluteBoxProps {
 	top?: string;
 	right?: string;
 	bottom?: string;
@@ -9,33 +9,20 @@ export function AbsoluteBox(props?: {
 	width?: string;
 	height?: string;
 	zIndex?: number;
-}): (children?: renderFnType) => TemplateResult<1>;
+	style?: string;
+	className?: string;
+}
 
 export function AbsoluteBox(
-	props?: {
-		top?: string;
-		right?: string;
-		bottom?: string;
-		left?: string;
-		width?: string;
-		height?: string;
-		zIndex?: number;
-	},
+	props?: AbsoluteBoxProps
+): (children?: renderFnType) => TemplateResult<1>;
+
+export function AbsoluteBox(
+	props?: AbsoluteBoxProps,
 	children?: renderFnType
 ): TemplateResult<1>;
 
-export function AbsoluteBox(
-	props?: {
-		top?: string;
-		right?: string;
-		bottom?: string;
-		left?: string;
-		width?: string;
-		height?: string;
-		zIndex?: number;
-	},
-	children?: renderFnType
-) {
+export function AbsoluteBox(props?: AbsoluteBoxProps, children?: renderFnType) {
 	const t = props?.top ? `top: ${props.top};` : "";
 	const r = props?.right ? `right: ${props.right};` : "";
 	const b = props?.bottom ? `bottom: ${props.bottom};` : "";
@@ -44,14 +31,18 @@ export function AbsoluteBox(
 	const h = props?.height ? `height: ${props.height};` : "";
 	const z =
 		typeof props?.zIndex === "number" ? `z-index: ${props.zIndex};` : "";
+	const style = props?.style ? props.style : "";
+	const className = props?.className ? props.className : "";
 	const render = (children?: renderFnType) => {
 		return html`
 			<div
+				class="${className}"
 				style="
       position: absolute;
       ${t} ${r} ${b} ${l}
       ${w} ${h}
       ${z}
+	  ${style}
     "
 			>
 				${renderFn(children)}

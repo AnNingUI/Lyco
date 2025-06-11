@@ -1,5 +1,10 @@
-import { html } from "lit";
-import { renderFn, renderFnType } from "./core";
+import { html, TemplateResult } from "lit";
+import { renderFn, renderFnType, WithHtml } from "./core";
+
+export function RowSplit(props?: {
+	firstWidth?: string; // 第一个面板固定宽度或百分比
+	gap?: string | number;
+}): WithHtml<renderFnType>;
 
 export function RowSplit(
 	props?: {
@@ -7,7 +12,21 @@ export function RowSplit(
 		gap?: string | number;
 	},
 	children?: renderFnType
-) {
+): TemplateResult<1>;
+
+export function RowSplit(
+	props?: {
+		firstWidth?: string; // 第一个面板固定宽度或百分比
+		gap?: string | number;
+	},
+	children?: renderFnType
+): TemplateResult<1> | WithHtml<renderFnType> {
+	if (children === undefined) {
+		const _ = (children?: renderFnType) => RowSplit(props, children ?? html``);
+		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
+			RowSplit(props, html(strings, ...values));
+		return _;
+	}
 	const gap = props?.gap ?? "0px";
 	const firstW = props?.firstWidth ?? "50%";
 
