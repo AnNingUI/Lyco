@@ -1,10 +1,25 @@
-import { html } from "lit";
+import { html, TemplateResult } from "lit";
 import { renderFnOrArray, renderFnOrArrayType } from "./core";
+
+export function Overlay(props?: {
+	background?: string;
+	zIndex?: number;
+	fullScreen?: boolean;
+}): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function Overlay(
 	props?: { background?: string; zIndex?: number; fullScreen?: boolean },
 	children?: renderFnOrArrayType
-) {
+): TemplateResult<1>;
+
+export function Overlay(
+	props?: { background?: string; zIndex?: number; fullScreen?: boolean },
+	children?: renderFnOrArrayType
+): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
+	if (children === undefined) {
+		return (children?: renderFnOrArrayType) =>
+			Overlay(props, children ?? [html``]);
+	}
 	const bg = props?.background ?? "rgba(0, 0, 0, 0.5)";
 	const z = props?.zIndex ?? 1000;
 	const full = props?.fullScreen !== false;
