@@ -1,6 +1,12 @@
 // Hidden.ts
 import { html, TemplateResult } from "lit";
-import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import {
+	componentCount,
+	getRandomClassName,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 export type HiddenProps = {
 	breakpoint?: string;
@@ -27,20 +33,24 @@ export function Hidden(
 	}
 	const bp = props?.breakpoint ?? "(max-width: 600px)";
 	const mode = props?.mode ?? "hide";
+	const now = componentCount.value;
 	const _className =
-		props?.className ?? getRandomClassName("Hidden::hidden-container");
+		props?.className ??
+		getRandomClassName("Hidden::hidden-container") + `-lyco-now-${now}`;
 	const styleContent =
 		mode === "hide"
 			? `@media ${bp} { .${_className} { display: none !important; } }`
 			: `@media ${bp} { .${_className} { display: block !important; } }
        @media not ${bp} { .${_className} { display: none !important; } }`;
 	return html`
-		<style>
-			.${_className} {
-			  display: block;
-			}
-			${styleContent}
-		</style>
-		<div class="${_className}">${renderFn(children)}</div>
+		<lyco-component name="Hidden">
+			<style>
+				.${_className} {
+				  display: block;
+				}
+				${styleContent}
+			</style>
+			<div class="${_className}">${renderFn(children)}</div>
+		</lyco-component>
 	`;
 }

@@ -1,5 +1,11 @@
 import { html, TemplateResult } from "lit";
-import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import {
+	componentCount,
+	getRandomClassName,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 export function AutoFitGrid(props: {
 	minItemWidth: string;
@@ -27,7 +33,9 @@ export function AutoFitGrid(
 			AutoFitGrid(props, html(strings, ...values));
 		return _;
 	}
-	const _className = getRandomClassName("AutoFitGrid::auto-fit-grid"); // 生成随机类名
+	const now = componentCount.value;
+	const _className =
+		getRandomClassName("AutoFitGrid::auto-fit-grid") + `-lyco-now-${now}`; // 生成随机类名
 	const gap = props?.gap ?? "16px";
 	const css = `
       .${_className} {
@@ -37,9 +45,11 @@ export function AutoFitGrid(
       }
     `;
 	return html`
-		<style>
-			${css}
-		</style>
-		<div class="${_className}">${renderFn(children)}</div>
+		<lyco-component name="AutoFitGrid">
+			<style>
+				${css}
+			</style>
+			<div class="${_className}">${renderFn(children)}</div>
+		</lyco-component>
 	`;
 }

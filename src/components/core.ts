@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html, LitElement, TemplateResult } from "lit";
 
 export type renderFnType = TemplateResult<1> | (() => TemplateResult<1>);
 
@@ -118,3 +118,20 @@ export function getRandomClassName(key: keyof typeof allRandomClassName) {
 		? randomClassName(r.prefix)
 		: allRandomClassName[key].className;
 }
+
+export const componentCount = {
+	value: 0,
+};
+export class LycoComponent extends LitElement {
+	shadowRoot: ShadowRoot;
+	constructor() {
+		super();
+		this.shadowRoot = this.attachShadow({ mode: "closed" });
+		componentCount.value++;
+	}
+
+	render() {
+		return html` <slot></slot> `;
+	}
+}
+customElements.define("lyco-component", LycoComponent);

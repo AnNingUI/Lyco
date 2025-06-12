@@ -1,5 +1,11 @@
 import { html, TemplateResult } from "lit";
-import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import {
+	componentCount,
+	getRandomClassName,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 export function GridRow(props?: {
 	gap?: string | number;
@@ -21,7 +27,9 @@ export function GridRow(
 		return _;
 	}
 
-	const _className = getRandomClassName("GridRow::grid-row"); // 生成随机类名
+	const now = componentCount.value;
+	const _className =
+		getRandomClassName("GridRow::grid-row") + `-lyco-now-${now}`; // 生成随机类名
 	const gapStyle = props?.gap ? `row-gap: ${props.gap};` : "";
 	const css = `
       .${_className} {
@@ -31,9 +39,11 @@ export function GridRow(
       }
     `;
 	return html`
-		<style>
-			${css}
-		</style>
-		<div class="${_className}">${renderFn(children)}</div>
+		<lyco-component name="GridRow">
+			<style>
+				${css}
+			</style>
+			<div class="${_className}">${renderFn(children)}</div>
+		</lyco-component>
 	`;
 }
