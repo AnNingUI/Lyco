@@ -1,5 +1,11 @@
 import { html, TemplateResult } from "lit";
-import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import {
+	componentCount,
+	getRandomClassName,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 export interface TableProps {
 	striped?: boolean;
@@ -27,8 +33,11 @@ export function Table(
 		return _;
 	}
 
+	const now = componentCount.value;
+
 	// 到这里说明 props 和 children 都已经传齐
-	const _className = props?.className ?? getRandomClassName("Table::table");
+	const _className =
+		props?.className ?? getRandomClassName("Table::table") + `-lyco-now-${now}`;
 	const striped = props?.striped
 		? `
       .${_className} tr:nth-child(even) { background: #f9f9f9; }
@@ -46,26 +55,28 @@ export function Table(
 		: "";
 
 	return html`
-		<style>
-			/* 将表格包裹在带有 _className 的 div 里，使后续 CSS 作用于该 div 下的 table */
-			.${_className} table {
-			  width: 100%;
-			  border-collapse: collapse;
-			}
-			.${_className} th,
-			.${_className} td {
-			  padding: 8px 12px;
-			  text-align: left;
-			}
-			${striped}
-			${hover}
-			${bordered}
-		</style>
+		<lyco-component name="Table">
+			<style>
+				/* 将表格包裹在带有 _className 的 div 里，使后续 CSS 作用于该 div 下的 table */
+				.${_className} table {
+				  width: 100%;
+				  border-collapse: collapse;
+				}
+				.${_className} th,
+				.${_className} td {
+				  padding: 8px 12px;
+				  text-align: left;
+				}
+				${striped}
+				${hover}
+				${bordered}
+			</style>
 
-		<div class="${_className}">
-			<table>
-				${renderFn(children)}
-			</table>
-		</div>
+			<div class="${_className}">
+				<table>
+					${renderFn(children)}
+				</table>
+			</div>
+		</lyco-component>
 	`;
 }

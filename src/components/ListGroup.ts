@@ -1,5 +1,6 @@
 import { html, TemplateResult } from "lit";
 import {
+	componentCount,
 	getRandomClassName,
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
@@ -41,8 +42,10 @@ export function ListGroup(
 	const hover = props?.hover
 		? `li:hover { background: #f1f1f1; cursor: pointer; }`
 		: "";
+	const now = componentCount.value;
 	const _className =
-		props?.className ?? getRandomClassName("ListGroup::list-group");
+		props?.className ??
+		getRandomClassName("ListGroup::list-group") + `-lyco-now-${now}`;
 	const injectRender = (
 		children: TemplateResult<1>,
 		_idx?: number,
@@ -56,26 +59,28 @@ export function ListGroup(
 		}
 	};
 	const render = (children: TemplateResult<1> | TemplateResult<1>[]) => html`
-		<style>
-			ul.${_className} {
-			  list-style: none;
-			  margin: 0;
-			  padding: 0;
-			  ${bordered};
-			}
-			ul.${_className} li {
-			  padding: 12px 16px;
-			  ${props?.bordered ? "border-bottom: 1px solid #ddd" : ""};
-			}
-			ul.${_className} li:last-child {
-			  ${props?.bordered ? "border-bottom: none" : ""};
-			}
-			${striped}
-			${hover}
-		</style>
-		<ul class="${_className}">
-			${renderFnOrArray(children, injectRender)}
-		</ul>
+		<lyco-component name="ListGroup">
+			<style>
+				ul.${_className} {
+				  list-style: none;
+				  margin: 0;
+				  padding: 0;
+				  ${bordered};
+				}
+				ul.${_className} li {
+				  padding: 12px 16px;
+				  ${props?.bordered ? "border-bottom: 1px solid #ddd" : ""};
+				}
+				ul.${_className} li:last-child {
+				  ${props?.bordered ? "border-bottom: none" : ""};
+				}
+				${striped}
+				${hover}
+			</style>
+			<ul class="${_className}">
+				${renderFnOrArray(children, injectRender)}
+			</ul>
+		</lyco-component>
 	`;
 
 	return renderFnOrArrayOrCurry(children, render);

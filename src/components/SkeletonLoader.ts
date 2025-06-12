@@ -1,6 +1,6 @@
 // SkeletonLoader.ts
 import { html } from "lit";
-import { getRandomClassName } from "./core";
+import { componentCount, getRandomClassName } from "./core";
 
 export function SkeletonLoader(props?: {
 	type?: "rect" | "circle";
@@ -15,29 +15,33 @@ export function SkeletonLoader(props?: {
 	const h = props?.height ?? "16px";
 	const br = props?.borderRadius ?? "4px";
 	const anim = props?.animation !== false;
+	const now = componentCount.value;
 	const _className =
-		props?.className ?? getRandomClassName("SkeletonLoader::skeleton-shimmer");
+		props?.className ??
+		getRandomClassName("SkeletonLoader::skeleton-shimmer") + `-lyco-now-${now}`;
 	const shapeStyle =
 		type === "circle"
 			? `border-radius: 50%; width: ${w}; height: ${w}`
 			: `border-radius: ${br}; width: ${w}; height: ${h}`;
 	return html`
-		<style>
-			${`
+		<lyco-component>
+			<style>
+				${`
             @keyframes ${_className + "-shimmer"} {
 			  0% { background-color: #eee; }
 			  50% { background-color: #ddd; }
 			  100% { background-color: #eee; }
 			}    
             `}
-			.${_className} {
-			  ${shapeStyle};
-			  background-color: #eee;
-			  ${anim
-				? `animation: ${_className + "-shimmer"} 1.2s infinite ease-in-out`
-				: ""};
-			}
-		</style>
-		<div class="${_className}"></div>
+				.${_className} {
+				  ${shapeStyle};
+				  background-color: #eee;
+				  ${anim
+					? `animation: ${_className + "-shimmer"} 1.2s infinite ease-in-out`
+					: ""};
+				}
+			</style>
+			<div class="${_className}"></div>
+		</lyco-component>
 	`;
 }

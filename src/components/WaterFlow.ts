@@ -1,5 +1,11 @@
 import { html, TemplateResult } from "lit";
-import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import {
+	componentCount,
+	getRandomClassName,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 export interface WaterFlowProps {
 	columnCount?: number;
@@ -29,41 +35,29 @@ export function WaterFlow(
 	// 解构 props，并设置默认值
 	const count = props?.columnCount ?? 3;
 	const gapValue = props?.gap ?? "16px";
-
+	const now = componentCount.value;
 	// 生成一个随机 className，方便后续扩展样式或避免样式冲突
-	const _className = getRandomClassName("WaterFlow::waterflow");
+	const _className =
+		getRandomClassName("WaterFlow::waterflow") + `-lyco-now-${now}`;
 
 	return html`
-		<style>
-			/* 使用 CSS 类来控制多列布局 */
-			.${_className} {
-				column-count: ${count};
-				column-gap: ${typeof gapValue === "number"
-					? `${gapValue}px`
-					: gapValue};
-			}
-			/* 子元素如果是块级元素，需要让它们适应多列流式布局 */
-			.${_className} > * {
-				display: inline-block;
-				width: 100%;
-			}
-		</style>
+		<lyco-component name="WaterFlow">
+			<style>
+				/* 使用 CSS 类来控制多列布局 */
+				.${_className} {
+					column-count: ${count};
+					column-gap: ${typeof gapValue === "number"
+						? `${gapValue}px`
+						: gapValue};
+				}
+				/* 子元素如果是块级元素，需要让它们适应多列流式布局 */
+				.${_className} > * {
+					display: inline-block;
+					width: 100%;
+				}
+			</style>
 
-		<div class="${_className}">${renderFn(children)}</div>
+			<div class="${_className}">${renderFn(children)}</div>
+		</lyco-component>
 	`;
 }
-
-WaterFlow().html`
-<div>
-  <div>1</div>
-  <div>2</div>
-  <div>3</div>
-  <div>4</div>
-  <div>5</div>
-  <div>6</div>
-  <div>7</div>
-  <div>8</div>
-  <div>9</div>
-  <div>10</div>
-</div>
-`;
