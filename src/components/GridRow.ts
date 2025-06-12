@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export function GridRow(props?: {
 	gap?: string | number;
@@ -21,15 +21,19 @@ export function GridRow(
 		return _;
 	}
 
+	const _className = getRandomClassName("GridRow::grid-row"); // 生成随机类名
+	const gapStyle = props?.gap ? `row-gap: ${props.gap};` : "";
+	const css = `
+      .${_className} {
+        display: grid;
+        grid-auto-flow: row;
+        ${gapStyle}
+      }
+    `;
 	return html`
-		<div
-			style="
-      display: grid;
-      grid-auto-flow: row;
-      ${props?.gap ? `row-gap: ${props.gap};` : ""}
-    "
-		>
-			${renderFn(children)}
-		</div>
+		<style>
+			${css}
+		</style>
+		<div class="${_className}">${renderFn(children)}</div>
 	`;
 }

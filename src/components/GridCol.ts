@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export function GridCol(props?: {
 	gap?: string | number;
@@ -20,15 +20,20 @@ export function GridCol(
 			GridCol(props, html(strings, ...values));
 		return _;
 	}
+
+	const _className = getRandomClassName("GridCol::grid-col"); // 生成随机类名
+	const gapStyle = props?.gap ? `column-gap: ${props.gap};` : "";
+	const css = `
+      .${_className} {
+        display: grid;
+        grid-auto-flow: column;
+        ${gapStyle}
+      }
+    `;
 	return html`
-		<div
-			style="
-      display: grid;
-      grid-auto-flow: column;
-      ${props?.gap ? `column-gap: ${props.gap};` : ""}
-    "
-		>
-			${renderFn(children)}
-		</div>
+		<style>
+			${css}
+		</style>
+		<div class="${_className}">${renderFn(children)}</div>
 	`;
 }

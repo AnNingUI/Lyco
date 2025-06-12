@@ -1,6 +1,6 @@
 import { html, TemplateResult } from "lit";
 import {
-	randomClassName,
+	getRandomClassName,
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
@@ -41,7 +41,8 @@ export function ListGroup(
 	const hover = props?.hover
 		? `li:hover { background: #f1f1f1; cursor: pointer; }`
 		: "";
-	const _className = props?.className ?? randomClassName("list-group");
+	const _className =
+		props?.className ?? getRandomClassName("ListGroup::list-group");
 	const injectRender = (
 		children: TemplateResult<1>,
 		_idx?: number,

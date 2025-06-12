@@ -1,6 +1,6 @@
 // SkeletonLoader.ts
 import { html } from "lit";
-import { randomClassName } from "./core";
+import { getRandomClassName } from "./core";
 
 export function SkeletonLoader(props?: {
 	type?: "rect" | "circle";
@@ -15,7 +15,8 @@ export function SkeletonLoader(props?: {
 	const h = props?.height ?? "16px";
 	const br = props?.borderRadius ?? "4px";
 	const anim = props?.animation !== false;
-	const _className = props?.className ?? randomClassName("skeleton-shimmer");
+	const _className =
+		props?.className ?? getRandomClassName("SkeletonLoader::skeleton-shimmer");
 	const shapeStyle =
 		type === "circle"
 			? `border-radius: 50%; width: ${w}; height: ${w}`

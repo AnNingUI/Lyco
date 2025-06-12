@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { randomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export interface WaterFlowProps {
 	columnCount?: number;
@@ -31,7 +31,7 @@ export function WaterFlow(
 	const gapValue = props?.gap ?? "16px";
 
 	// 生成一个随机 className，方便后续扩展样式或避免样式冲突
-	const _className = randomClassName("waterflow");
+	const _className = getRandomClassName("WaterFlow::waterflow");
 
 	return html`
 		<style>

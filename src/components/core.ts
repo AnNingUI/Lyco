@@ -87,3 +87,34 @@ export function renderFnOrArrayOrCurry(
 
 	return fnOrArray ? curriedFn(fnOrArray) : curriedFn;
 }
+
+const withInit = (prefix: string) => ({
+	init: false,
+	prefix,
+	className: "___LYCO_NULL___",
+});
+
+const allRandomClassName = {
+	"GridBreakpoint::grid-breakpoint": withInit("grid-breakpoint"),
+	"Hidden::hidden-container": withInit("hidden-container"),
+	"ListGroup::list-group": withInit("list-group"),
+	"ScrollBar::scrollbar-container": withInit("scrollbar-container"),
+	"SkeletonLoader::skeleton-shimmer": withInit("skeleton-shimmer"),
+	"Swiper::swiper": withInit("swiper"),
+	"Table::table": withInit("table"),
+	"WaterFlow::waterflow": withInit("waterflow"),
+	"AutoFitGrid::auto-fit-grid": withInit("auto-fit-grid"),
+	"GridCol::grid-col": withInit("grid-col"),
+	"GridRow::grid-row": withInit("grid-row"),
+};
+
+export function getRandomClassName(key: keyof typeof allRandomClassName) {
+	const r = allRandomClassName[key];
+	if (!r.init) {
+		allRandomClassName[key].init = true;
+		allRandomClassName[key].className = randomClassName(r.prefix);
+	}
+	return allRandomClassName[key].className === "___LYCO_NULL___"
+		? randomClassName(r.prefix)
+		: allRandomClassName[key].className;
+}
