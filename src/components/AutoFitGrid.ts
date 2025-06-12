@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export function AutoFitGrid(props: {
 	minItemWidth: string;
@@ -27,16 +27,19 @@ export function AutoFitGrid(
 			AutoFitGrid(props, html(strings, ...values));
 		return _;
 	}
+	const _className = getRandomClassName("AutoFitGrid::auto-fit-grid"); // 生成随机类名
 	const gap = props?.gap ?? "16px";
+	const css = `
+      .${_className} {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(${props.minItemWidth}, 1fr));
+        gap: ${gap};
+      }
+    `;
 	return html`
-		<div
-			style="
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(${props.minItemWidth}, 1fr));
-      gap: ${gap};
-    "
-		>
-			${renderFn(children)}
-		</div>
+		<style>
+			${css}
+		</style>
+		<div class="${_className}">${renderFn(children)}</div>
 	`;
 }

@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { randomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export interface TableProps {
 	striped?: boolean;
@@ -28,7 +28,7 @@ export function Table(
 	}
 
 	// 到这里说明 props 和 children 都已经传齐
-	const _className = props?.className ?? randomClassName("table");
+	const _className = props?.className ?? getRandomClassName("Table::table");
 	const striped = props?.striped
 		? `
       .${_className} tr:nth-child(even) { background: #f9f9f9; }

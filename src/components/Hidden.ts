@@ -1,6 +1,6 @@
 // Hidden.ts
 import { html, TemplateResult } from "lit";
-import { randomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export type HiddenProps = {
 	breakpoint?: string;
@@ -27,7 +27,8 @@ export function Hidden(
 	}
 	const bp = props?.breakpoint ?? "(max-width: 600px)";
 	const mode = props?.mode ?? "hide";
-	const _className = props?.className ?? randomClassName("hidden-container");
+	const _className =
+		props?.className ?? getRandomClassName("Hidden::hidden-container");
 	const styleContent =
 		mode === "hide"
 			? `@media ${bp} { .${_className} { display: none !important; } }`

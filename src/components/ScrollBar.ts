@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { randomClassName, renderFn, renderFnType, WithHtml } from "./core";
+import { getRandomClassName, renderFn, renderFnType, WithHtml } from "./core";
 
 export function ScrollBar(props?: {
 	direction?: "vertical" | "horizontal";
@@ -40,7 +40,8 @@ export function ScrollBar(
 	const h = props?.height ?? "100%";
 	const w = props?.width ?? "100%";
 	const extraCss = props?.customCss ?? "";
-	const _className = props?.className ?? randomClassName("scrollbar-container");
+	const _className =
+		props?.className ?? getRandomClassName("ScrollBar::scrollbar-container");
 	const overflowStyle =
 		dir === "horizontal"
 			? "overflow-x: auto; overflow-y: hidden"

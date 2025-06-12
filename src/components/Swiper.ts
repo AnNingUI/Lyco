@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { randomClassName } from "./core";
+import { getRandomClassName } from "./core";
 
 type ScrollDirection = "x" | "y" | "both";
 type ScrollBehavior = "auto" | "smooth";
@@ -60,7 +60,7 @@ export function Swiper(
 		snapType = "mandatory",
 		height = "auto",
 		width = "100%",
-		className = randomClassName("swiper"),
+		className = getRandomClassName("Swiper::swiper"),
 		direction = "x",
 		scrollBehavior = "smooth",
 		align = "start",
