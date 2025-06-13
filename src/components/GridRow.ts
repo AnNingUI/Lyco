@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import {
-	componentCount,
+	getComponentCount,
 	getRandomClassName,
+	LycoComponent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -27,9 +28,9 @@ export function GridRow(
 		return _;
 	}
 
-	const now = componentCount.value;
+	const now = getComponentCount("GridRow");
 	const _className =
-		getRandomClassName("GridRow::grid-row") + `-lyco-now-${now}`; // 生成随机类名
+		getRandomClassName("GridRow::grid-row") + "-lyco-now-" + now; // 生成随机类名
 	const gapStyle = props?.gap ? `row-gap: ${props.gap};` : "";
 	const css = `
       .${_className} {
@@ -38,12 +39,13 @@ export function GridRow(
         ${gapStyle}
       }
     `;
-	return html`
-		<lyco-component name="GridRow">
+	return LycoComponent(
+		"GridRow",
+		html`
 			<style>
 				${css}
 			</style>
 			<div class="${_className}">${renderFn(children)}</div>
-		</lyco-component>
-	`;
+		`
+	);
 }

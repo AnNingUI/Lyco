@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import {
-	componentCount,
+	getComponentCount,
 	getRandomClassName,
+	LycoComponent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -46,37 +47,41 @@ export function ScrollBar(
 	const h = props?.height ?? "100%";
 	const w = props?.width ?? "100%";
 	const extraCss = props?.customCss ?? "";
-	const now = componentCount.value;
+	const now = getComponentCount("ScrollBar");
 	const _className =
 		props?.className ??
-		getRandomClassName("ScrollBar::scrollbar-container") + `-lyco-now-${now}`;
+		getRandomClassName("ScrollBar::scrollbar-container") + "-lyco-now-" + now;
 	const overflowStyle =
 		dir === "horizontal"
 			? "overflow-x: auto; overflow-y: hidden"
 			: "overflow-y: auto; overflow-x: hidden";
 
-	return html`
-		<lyco-component name="ScrollBar">
+	const css = `
+	.${_className} {
+	  ${overflowStyle};
+	  width: ${w};
+	  height: ${h};
+	}
+	.${_className}::-webkit-scrollbar {
+	  width: 8px;
+	  height: 8px;
+	}
+	.${_className}::-webkit-scrollbar-thumb {
+	  background-color: rgba(0, 0, 0, 0.2);
+	  border-radius: 4px;
+	}
+	.${_className}::-webkit-scrollbar-track {
+	  background: rgba(0, 0, 0, 0.05);
+	}
+	${extraCss}
+	`;
+	return LycoComponent(
+		"ScrollBar",
+		html`
 			<style>
-				.${_className} {
-				  ${overflowStyle};
-				  width: ${w};
-				  height: ${h};
-				}
-				.${_className}::-webkit-scrollbar {
-				  width: 8px;
-				  height: 8px;
-				}
-				.${_className}::-webkit-scrollbar-thumb {
-				  background-color: rgba(0, 0, 0, 0.2);
-				  border-radius: 4px;
-				}
-				.${_className}::-webkit-scrollbar-track {
-				  background: rgba(0, 0, 0, 0.05);
-				}
-				${extraCss}
+				${css}
 			</style>
 			<div class="${_className}">${renderFn(children)}</div>
-		</lyco-component>
-	`;
+		`
+	);
 }

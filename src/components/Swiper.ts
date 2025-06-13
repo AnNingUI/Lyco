@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { componentCount, getRandomClassName } from "./core";
+import { getComponentCount, getRandomClassName, LycoComponent } from "./core";
 
 type ScrollDirection = "x" | "y" | "both";
 type ScrollBehavior = "auto" | "smooth";
@@ -54,7 +54,7 @@ export function Swiper(
 			Swiper(props, slides ?? [html``]);
 	}
 
-	const now = componentCount.value;
+	const now = getComponentCount("Swiper");
 	// 解构 props，并设置默认值
 	const {
 		gap = "8px",
@@ -385,115 +385,119 @@ export function Swiper(
 			<button class="next" @click=${nextSlide}>▶</button>
 		</div>
 	`;
+	const css = `
+	.${_className} {
+		position: relative;
+		overflow: hidden;
+		width: ${width};
+		height: ${height};
+	}
+
+	.${_containerClassName} {
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		scroll-snap-type: ${direction + " " + snapType};
+		-webkit-overflow-scrolling: touch;
+		scroll-behavior: ${scrollBehavior};
+		gap: ${gap};
+		display: flex;
+		flex-direction: ${direction === "x" ? "row" : "column"};
+	}
+
+	.${_slideClassName} {
+		scroll-snap-align: ${align};
+		flex-shrink: 0;
+	}
+
+	.${_navigationClassName} {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		transform: translateY(-50%);
+		display: flex;
+		justify-content: space-between;
+		pointer-events: none;
+		padding: ${navigationPosition === "outside" ? "0 1rem" : "0 0.5rem"};
+	}
+
+	.${_navigationClassName} button {
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		background-color: rgba(0, 0, 0, 0.5);
+		color: white;
+		border: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		pointer-events: auto;
+		transition: background-color 0.3s;
+	}
+
+	.${_navigationClassName} button:hover {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+
+	.${_paginationClassName} {
+		position: absolute;
+		bottom: 1rem;
+		left: 0;
+		right: 0;
+		display: flex;
+		justify-content: center;
+		gap: 0.5rem;
+		align-items: center;
+	}
+	.${_paginationClassName} button {
+		width: 0.75rem;
+		height: 0.75rem;
+		border-radius: 50%;
+		background-color: rgba(255, 255, 255, 0.5);
+		border: none;
+		cursor: pointer;
+		transition: background-color 0.3s, transform 0.3s;
+	}
+	.${_paginationClassName} button.active {
+		background-color: white;
+		transform: scale(1.2);
+	}
+
+	.${_paginationClassName}.fraction {
+		position: absolute;
+		bottom: 1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		color: white;
+		font-size: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.${_paginationClassName}.progressbar {
+		position: absolute;
+		bottom: 0.5rem;
+		left: 0;
+		right: 0;
+		height: 0.25rem;
+		background-color: rgba(255, 255, 255, 0.2);
+	}
+	.${_paginationClassName}.progressbar .progress {
+		height: 100%;
+		background-color: white;
+		transition: width 0.3s;
+	}
+	`;
 
 	// 最终返回的模板
-	return html`
-		<lyco-component name="Swiper">
+	return LycoComponent(
+		"Swiper",
+		html`
 			<style>
-				.${_className} {
-					position: relative;
-					overflow: hidden;
-					width: ${width};
-					height: ${height};
-				}
-
-				.${_containerClassName} {
-					width: 100%;
-					height: 100%;
-					overflow: auto;
-					scroll-snap-type: ${direction + " " + snapType};
-					-webkit-overflow-scrolling: touch;
-					scroll-behavior: ${scrollBehavior};
-					gap: ${gap};
-					display: flex;
-					flex-direction: ${direction === "x" ? "row" : "column"};
-				}
-
-				.${_slideClassName} {
-					scroll-snap-align: ${align};
-					flex-shrink: 0;
-				}
-
-				.${_navigationClassName} {
-					position: absolute;
-					top: 50%;
-					left: 0;
-					right: 0;
-					transform: translateY(-50%);
-					display: flex;
-					justify-content: space-between;
-					pointer-events: none;
-					padding: ${navigationPosition === "outside" ? "0 1rem" : "0 0.5rem"};
-				}
-
-				.${_navigationClassName} button {
-					width: 2.5rem;
-					height: 2.5rem;
-					border-radius: 50%;
-					background-color: rgba(0, 0, 0, 0.5);
-					color: white;
-					border: none;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					cursor: pointer;
-					pointer-events: auto;
-					transition: background-color 0.3s;
-				}
-
-				.${_navigationClassName} button:hover {
-					background-color: rgba(0, 0, 0, 0.8);
-				}
-
-				.${_paginationClassName} {
-					position: absolute;
-					bottom: 1rem;
-					left: 0;
-					right: 0;
-					display: flex;
-					justify-content: center;
-					gap: 0.5rem;
-					align-items: center;
-				}
-				.${_paginationClassName} button {
-					width: 0.75rem;
-					height: 0.75rem;
-					border-radius: 50%;
-					background-color: rgba(255, 255, 255, 0.5);
-					border: none;
-					cursor: pointer;
-					transition: background-color 0.3s, transform 0.3s;
-				}
-				.${_paginationClassName} button.active {
-					background-color: white;
-					transform: scale(1.2);
-				}
-
-				.${_paginationClassName}.fraction {
-					position: absolute;
-					bottom: 1rem;
-					left: 50%;
-					transform: translateX(-50%);
-					color: white;
-					font-size: 1rem;
-					display: flex;
-					align-items: center;
-					gap: 0.25rem;
-				}
-
-				.${_paginationClassName}.progressbar {
-					position: absolute;
-					bottom: 0.5rem;
-					left: 0;
-					right: 0;
-					height: 0.25rem;
-					background-color: rgba(255, 255, 255, 0.2);
-				}
-				.${_paginationClassName}.progressbar .progress {
-					height: 100%;
-					background-color: white;
-					transition: width 0.3s;
-				}
+				${css}
 			</style>
 
 			<div class="${_className}">
@@ -516,6 +520,6 @@ export function Swiper(
 					? paginationProgress
 					: null}
 			</div>
-		</lyco-component>
-	`;
+		`
+	);
 }

@@ -1,4 +1,4 @@
-import { html, LitElement, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 
 export type renderFnType = TemplateResult<1> | (() => TemplateResult<1>);
 
@@ -118,20 +118,38 @@ export function getRandomClassName(key: keyof typeof allRandomClassName) {
 		? randomClassName(r.prefix)
 		: allRandomClassName[key].className;
 }
-
-export const componentCount = {
-	value: 0,
+type ComponentCountItem = {
+	value: number;
 };
-export class LycoComponent extends LitElement {
-	shadowRoot: ShadowRoot;
-	constructor() {
-		super();
-		this.shadowRoot = this.attachShadow({ mode: "closed" });
-		componentCount.value++;
-	}
 
-	render() {
-		return html` <slot></slot> `;
+type ComponentCount = {
+	[key: string]: ComponentCountItem;
+} & {
+	all: ComponentCountItem; // 修改为 ComponentCountItem 类型
+};
+export const componentCount: ComponentCount = {
+	all: { value: 0 },
+};
+
+export function getComponentCount(name: string) {
+	if (!componentCount[name]?.value) {
+		componentCount[name] = { value: 0 };
 	}
+	return componentCount[name].value;
 }
-customElements.define("lyco-component", LycoComponent);
+
+export function LycoComponent(name: string, slot: TemplateResult<1>) {
+	componentCount.all = {
+		value: componentCount.all.value + 1,
+	};
+	componentCount[name] === undefined
+		? (componentCount[name] = { value: 0 })
+		: (componentCount[name].value = componentCount[name].value + 1);
+	console.debug(
+		`LycoComponent: ${name} - ${componentCount[name].value} - ${componentCount.all.value}`
+	);
+	return html`
+		<!-- ${name} - ${componentCount[name].value} -->
+		${slot}
+	`;
+}

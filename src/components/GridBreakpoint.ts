@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import {
-	componentCount,
+	getComponentCount,
 	getRandomClassName,
+	LycoComponent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -37,31 +38,39 @@ export function GridBreakpoint(
 
 	const defCols = props.defaultColumns ?? 1;
 	const gap = props.gap ?? "16px";
-	const now = componentCount.value;
+	// const props = "breakpoints-" +
+	const now = getComponentCount("GridBreakpoint");
 	const _className =
 		props.className ??
-		getRandomClassName("GridBreakpoint::grid-breakpoint") + `-lyco-now-${now}`;
+		getRandomClassName("GridBreakpoint::grid-breakpoint") + "-lyco-now-" + now;
 	// 生成媒体查询 CSS
 	const mqCss = Object.entries(props.breakpoints)
 		.map(
-			([query, cols]) => `
-      @media ${query} {
-        .${_className} { grid-template-columns: repeat(${cols}, 1fr); }
-      }
-    `
+			([query, cols]) =>
+				"@media" +
+				query +
+				"{\n" +
+				_className +
+				"{ grid-template-columns: repeat(" +
+				cols +
+				", 1fr); }\n" +
+				"}"
 		)
 		.join("\n");
-	return html`
-		<lyco-component name="GridBreakpoint">
+	const css = `
+	.${_className} {
+	  display: grid;
+	  grid-template-columns: repeat(${defCols}, 1fr);
+	  gap: ${gap};
+	}
+	${mqCss}`;
+	return LycoComponent(
+		"GridBreakpoint",
+		html`
 			<style>
-				.${_className} {
-				  display: grid;
-				  grid-template-columns: repeat(${defCols}, 1fr);
-				  gap: ${gap};
-				}
-				${mqCss}
+				${css}
 			</style>
 			<div class="${_className}">${renderFn(children)}</div>
-		</lyco-component>
-	`;
+		`
+	);
 }

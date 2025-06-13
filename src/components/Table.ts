@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import {
-	componentCount,
+	getComponentCount,
 	getRandomClassName,
+	LycoComponent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -33,7 +34,7 @@ export function Table(
 		return _;
 	}
 
-	const now = componentCount.value;
+	const now = getComponentCount("Table");
 
 	// 到这里说明 props 和 children 都已经传齐
 	const _className =
@@ -54,22 +55,27 @@ export function Table(
     `
 		: "";
 
-	return html`
-		<lyco-component name="Table">
+	const css = `
+	/* 将表格包裹在带有 _className 的 div 里，使后续 CSS 作用于该 div 下的 table */
+	.${_className} table {
+	  width: 100%;
+	  border-collapse: collapse;
+	}
+	.${_className} th,
+	.${_className} td {
+	  padding: 8px 12px;
+	  text-align: left;
+	}
+	${striped}
+	${hover}
+	${bordered}
+	`;
+
+	return LycoComponent(
+		"Table",
+		html`
 			<style>
-				/* 将表格包裹在带有 _className 的 div 里，使后续 CSS 作用于该 div 下的 table */
-				.${_className} table {
-				  width: 100%;
-				  border-collapse: collapse;
-				}
-				.${_className} th,
-				.${_className} td {
-				  padding: 8px 12px;
-				  text-align: left;
-				}
-				${striped}
-				${hover}
-				${bordered}
+				${css}
 			</style>
 
 			<div class="${_className}">
@@ -77,6 +83,6 @@ export function Table(
 					${renderFn(children)}
 				</table>
 			</div>
-		</lyco-component>
-	`;
+		`
+	);
 }
