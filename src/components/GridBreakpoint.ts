@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -13,6 +16,7 @@ export type GridBreakpointProps = {
 	defaultColumns?: number;
 	gap?: string;
 	className?: string;
+	on?: OnEvent;
 };
 
 export function GridBreakpoint(
@@ -38,7 +42,6 @@ export function GridBreakpoint(
 
 	const defCols = props.defaultColumns ?? 1;
 	const gap = props.gap ?? "16px";
-	// const props = "breakpoints-" +
 	const now = getComponentCount("GridBreakpoint");
 	const _className =
 		props.className ??
@@ -64,13 +67,25 @@ export function GridBreakpoint(
 	  gap: ${gap};
 	}
 	${mqCss}`;
+	const binder = createEventBinder(props?.on ?? {});
 	return LycoComponent(
 		"GridBreakpoint",
 		html`
 			<style>
 				${css}
 			</style>
-			<div class="${_className}">${renderFn(children)}</div>
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
+				${renderFn(children)}
+			</div>
 		`
 	);
 }

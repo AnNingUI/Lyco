@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -10,15 +13,16 @@ import {
 
 export function GridRow(props?: {
 	gap?: string | number;
+	on?: OnEvent;
 }): WithHtml<renderFnType>;
 
 export function GridRow(
-	props?: { gap?: string | number },
+	props?: { gap?: string | number; on?: OnEvent },
 	children?: renderFnType
 ): TemplateResult<1>;
 
 export function GridRow(
-	props?: { gap?: string | number },
+	props?: { gap?: string | number; on?: OnEvent },
 	children?: renderFnType
 ) {
 	if (children === undefined) {
@@ -30,7 +34,7 @@ export function GridRow(
 
 	const now = getComponentCount("GridRow");
 	const _className =
-		getRandomClassName("GridRow::grid-row") + "-lyco-now-" + now; // 生成随机类名
+		getRandomClassName("GridRow::grid-row") + "-lyco-now-" + now;
 	const gapStyle = props?.gap ? `row-gap: ${props.gap};` : "";
 	const css = `
       .${_className} {
@@ -39,13 +43,25 @@ export function GridRow(
         ${gapStyle}
       }
     `;
+	const binder = createEventBinder(props?.on ?? {});
 	return LycoComponent(
 		"GridRow",
 		html`
 			<style>
 				${css}
 			</style>
-			<div class="${_className}">${renderFn(children)}</div>
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
+				${renderFn(children)}
+			</div>
 		`
 	);
 }

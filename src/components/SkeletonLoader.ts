@@ -1,6 +1,13 @@
 // SkeletonLoader.ts
 import { html } from "lit";
-import { getComponentCount, getRandomClassName, LycoComponent } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	getComponentCount,
+	getRandomClassName,
+	LycoComponent,
+	OnEvent,
+} from "./core";
 
 export function SkeletonLoader(props?: {
 	type?: "rect" | "circle";
@@ -9,6 +16,7 @@ export function SkeletonLoader(props?: {
 	borderRadius?: string;
 	animation?: boolean;
 	className?: string;
+	on?: OnEvent;
 }) {
 	const type = props?.type ?? "rect";
 	const w = props?.width ?? "100%";
@@ -23,6 +31,7 @@ export function SkeletonLoader(props?: {
 		type === "circle"
 			? `border-radius: 50%; width: ${w}; height: ${w}`
 			: `border-radius: ${br}; width: ${w}; height: ${h}`;
+	const binder = createEventBinder(props?.on ?? {});
 	return LycoComponent(
 		"SkeletonLoader",
 		html`
@@ -42,7 +51,16 @@ export function SkeletonLoader(props?: {
 					: ""};
 				}
 			</style>
-			<div class="${_className}"></div>
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			></div>
 		`
 	);
 }

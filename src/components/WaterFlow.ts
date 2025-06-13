@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -11,6 +14,7 @@ import {
 export interface WaterFlowProps {
 	columnCount?: number;
 	gap?: string | number;
+	on?: OnEvent;
 }
 
 export function WaterFlow(props?: WaterFlowProps): WithHtml<renderFnType>;
@@ -54,6 +58,8 @@ export function WaterFlow(
 	}
 	`;
 
+	const binder = createEventBinder(props?.on ?? {});
+
 	return LycoComponent(
 		"WaterFlow",
 		html`
@@ -61,7 +67,18 @@ export function WaterFlow(
 				${css}
 			</style>
 
-			<div class="${_className}">${renderFn(children)}</div>
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
+				${renderFn(children)}
+			</div>
 		`
 	);
 }

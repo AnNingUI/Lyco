@@ -1,5 +1,12 @@
 import { html, TemplateResult } from "lit";
-import { getComponentCount, getRandomClassName, LycoComponent } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	getComponentCount,
+	getRandomClassName,
+	LycoComponent,
+	OnEvent,
+} from "./core";
 
 type ScrollDirection = "x" | "y" | "both";
 type ScrollBehavior = "auto" | "smooth";
@@ -26,6 +33,7 @@ export interface SwiperProps {
 	touchEnabled?: boolean;
 	mouseWheel?: boolean;
 	onSlideChange?: (index: number) => void;
+	on?: OnEvent;
 }
 
 // 支持柯里化调用
@@ -75,6 +83,7 @@ export function Swiper(
 		touchEnabled = true,
 		mouseWheel = false,
 		onSlideChange,
+		on,
 	} = props;
 
 	const _className = className;
@@ -492,6 +501,8 @@ export function Swiper(
 	}
 	`;
 
+	const binder = createEventBinder(on ?? {});
+
 	// 最终返回的模板
 	return LycoComponent(
 		"Swiper",
@@ -500,7 +511,16 @@ export function Swiper(
 				${css}
 			</style>
 
-			<div class="${_className}">
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
 				<div class="${_containerClassName}">
 					${_slides.map(
 						(slide, index) => html`

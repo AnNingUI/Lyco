@@ -1,6 +1,13 @@
 // Badge.ts
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 interface BadgeProps {
 	content?: string | number;
@@ -8,6 +15,7 @@ interface BadgeProps {
 	size?: string;
 	background?: string;
 	color?: string;
+	on?: OnEvent;
 }
 
 export function Badge(props?: BadgeProps): WithHtml<renderFnType>;
@@ -38,10 +46,18 @@ export function Badge(
 		pos.includes("bottom") ? "0" : "auto",
 		pos.includes("left") ? "0" : "auto",
 	];
+	const binder = createEventBinder(props?.on ?? {});
 	return html`
 		<div style="position: relative; display: inline-block;">
 			${renderFn(children)}
 			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
 				style="
         position: absolute;
         top: ${top};

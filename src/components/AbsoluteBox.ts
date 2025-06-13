@@ -1,7 +1,14 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnOrCurry, renderFnType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFn,
+	renderFnOrCurry,
+	renderFnType,
+} from "./core";
 
-interface AbsoluteBoxProps {
+type AbsoluteBoxProps = {
 	top?: string;
 	right?: string;
 	bottom?: string;
@@ -11,7 +18,8 @@ interface AbsoluteBoxProps {
 	zIndex?: number;
 	style?: string;
 	className?: string;
-}
+	on?: OnEvent;
+};
 
 export function AbsoluteBox(
 	props?: AbsoluteBoxProps
@@ -33,9 +41,17 @@ export function AbsoluteBox(props?: AbsoluteBoxProps, children?: renderFnType) {
 		typeof props?.zIndex === "number" ? `z-index: ${props.zIndex};` : "";
 	const style = props?.style ? props.style : "";
 	const className = props?.className ? props.className : "";
+	const binder = createEventBinder(props?.on ?? {});
 	const render = (children?: renderFnType) => {
 		return html`
 			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
 				class="${className}"
 				style="
       position: absolute;
