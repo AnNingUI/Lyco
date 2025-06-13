@@ -2,7 +2,6 @@
 import path from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-
 // https://vitejs.dev/config/
 export default defineConfig({
 	build: {
@@ -15,7 +14,12 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			// 确保将 peerDependencies（尤其是 lit）排除在打包之外
-			external: ["lit"],
+			external: [
+				"lit",
+				"lit/decorators.js",
+				"lit/directives/ref.js",
+				"lit/directives/unsafe-svg.js",
+			],
 			output: {
 				// 为每种格式添加注释 banner（可选）
 				banner: `/* lyco v1.0.0 | (c) Copyright AnNingUI */`,

@@ -226,8 +226,5 @@ export function createEventBinder(on: OnEvent) {
 		unbindAll() {
 			eventListeners.clear();
 		},
-		auto(el?: Element) {
-			el ? this.bind(el) : this.unbindAll();
-		},
 	};
 }
