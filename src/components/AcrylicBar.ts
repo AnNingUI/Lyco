@@ -1,5 +1,11 @@
 import { html, TemplateResult } from "lit";
-import { renderFnOrArrayOrCurry, renderFnOrArrayType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArrayOrCurry,
+	renderFnOrArrayType,
+} from "./core";
 
 interface AcrylicBarProps {
 	width?: string; // 宽度，如 "300px" 或 "50%"
@@ -13,6 +19,7 @@ interface AcrylicBarProps {
 	borderRadius?: string; // 圆角，默认 "12px"
 	padding?: string; // 内边距，默认 "16px"
 	zIndex?: number; // z-index，默认 1000
+	on?: OnEvent;
 }
 
 export function AcrylicBar(
@@ -41,10 +48,11 @@ export function AcrylicBar(
 	const br = props?.borderRadius ?? "12px";
 	const pd = props?.padding ?? "16px";
 	const z = props?.zIndex ?? 1000;
-
+	const binder = createEventBinder(props?.on ?? {});
 	const render = (children: TemplateResult) => {
 		return html`
 			<div
+				${ref(binder.auto)}
 				style="
       position: fixed;
       top: ${top};

@@ -1,9 +1,12 @@
 // Hidden.ts
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -13,6 +16,7 @@ export type HiddenProps = {
 	breakpoint?: string;
 	mode?: "hide" | "show";
 	className?: string;
+	on?: OnEvent;
 };
 
 export function Hidden(props?: HiddenProps): WithHtml<renderFnType>;
@@ -48,13 +52,14 @@ export function Hidden(
 	  display: block;
 	}
 	${styleContent}`;
+	const binder = createEventBinder(props?.on ?? {});
 	return LycoComponent(
 		"Hidden",
 		html`
 			<style>
 				${css}
 			</style>
-			<div class="${_className}">${renderFn(children)}</div>
+			<div ${ref(binder.auto)} class="${_className}">${renderFn(children)}</div>
 		`
 	);
 }

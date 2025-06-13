@@ -1,10 +1,17 @@
 import { html, TemplateResult } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArray,
+	renderFnOrArrayType,
+} from "./core";
 
 export function SideBarContainer(props?: {
 	sidebarWidth?: string; // 侧边栏宽度，比如 "240px"
 	sidebarPosition?: "left" | "right";
 	gap?: string | number;
+	on?: OnEvent;
 }): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function SideBarContainer(
@@ -12,6 +19,7 @@ export function SideBarContainer(
 		sidebarWidth?: string; // 侧边栏宽度，比如 "240px"
 		sidebarPosition?: "left" | "right";
 		gap?: string | number;
+		on?: OnEvent;
 	},
 	children?: renderFnOrArrayType
 ): TemplateResult<1>;
@@ -21,6 +29,7 @@ export function SideBarContainer(
 		sidebarWidth?: string; // 侧边栏宽度，比如 "240px"
 		sidebarPosition?: "left" | "right";
 		gap?: string | number;
+		on?: OnEvent;
 	},
 	children?: renderFnOrArrayType
 ): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
@@ -44,8 +53,11 @@ export function SideBarContainer(
 		mainContent = renderFnOrArray(children) as any;
 	}
 
+	const binder = createEventBinder(props?.on ?? {});
+
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       display: flex;
       flex-direction: ${pos === "left" ? "row" : "row-reverse"};

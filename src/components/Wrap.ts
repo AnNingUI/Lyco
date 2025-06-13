@@ -1,11 +1,19 @@
 import { html, TemplateResult } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArray,
+	renderFnOrArrayType,
+} from "./core";
 
 interface WrapProps {
 	direction?: "row" | "column";
 	gap?: string | number;
 	align?: string;
 	justify?: string;
+	// 新增 on 属性
+	on?: OnEvent;
 }
 
 export function Wrap(
@@ -22,11 +30,14 @@ export function Wrap(
 	children?: renderFnOrArrayType
 ): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
 	const dir = props?.direction ?? "row";
+	// 创建事件绑定器
+	const binder = createEventBinder(props?.on ?? {});
 	if (children === undefined) {
 		return (children) => Wrap(props, children ?? html``);
 	}
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       display: flex;
       flex-direction: ${dir};

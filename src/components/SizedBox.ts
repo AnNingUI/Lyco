@@ -1,7 +1,15 @@
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createEventBinder, OnEvent } from "./core";
 
-export function SizedBox(props?: { width?: string; height?: string }) {
+export function SizedBox(props?: {
+	width?: string;
+	height?: string;
+	on?: OnEvent;
+}) {
 	const w = props?.width ? `width: ${props.width};` : "";
 	const h = props?.height ? `height: ${props.height};` : "";
-	return html` <div style="${w} ${h}"></div> `;
+	const binder = createEventBinder(props?.on ?? {});
+
+	return html`<div ${ref(binder.auto)} style="${w} ${h}"></div>`;
 }

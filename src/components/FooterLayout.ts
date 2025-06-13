@@ -1,12 +1,20 @@
 // FooterLayout.ts
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 interface FooterLayoutProps {
 	columns?: number;
 	gap?: string;
 	background?: string;
 	padding?: string;
+	on?: OnEvent;
 }
 
 export function FooterLayout(props?: FooterLayoutProps): WithHtml<renderFnType>;
@@ -31,8 +39,10 @@ export function FooterLayout(
 	const gap = props?.gap ?? "24px";
 	const bg = props?.background ?? "#f8f8f8";
 	const pad = props?.padding ?? "40px 16px";
+	const binder = createEventBinder(props?.on ?? {});
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       width: 100%;
       background: ${bg};

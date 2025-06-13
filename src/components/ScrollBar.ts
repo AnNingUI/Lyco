@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -14,6 +17,7 @@ export function ScrollBar(props?: {
 	width?: string;
 	customCss?: string;
 	className?: string;
+	on?: OnEvent;
 }): WithHtml<renderFnType>;
 
 export function ScrollBar(
@@ -23,6 +27,7 @@ export function ScrollBar(
 		width?: string;
 		customCss?: string;
 		className?: string;
+		on?: OnEvent;
 	},
 	children?: renderFnType
 ): TemplateResult<1>;
@@ -34,6 +39,7 @@ export function ScrollBar(
 		width?: string;
 		customCss?: string;
 		className?: string;
+		on?: OnEvent;
 	},
 	children?: renderFnType
 ): TemplateResult<1> | WithHtml<renderFnType> {
@@ -75,13 +81,14 @@ export function ScrollBar(
 	}
 	${extraCss}
 	`;
+	const binder = createEventBinder(props?.on ?? {});
 	return LycoComponent(
 		"ScrollBar",
 		html`
 			<style>
 				${css}
 			</style>
-			<div class="${_className}">${renderFn(children)}</div>
+			<div ${ref(binder.auto)} class="${_className}">${renderFn(children)}</div>
 		`
 	);
 }

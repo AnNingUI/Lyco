@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
@@ -13,6 +16,7 @@ export function ListGroup(props?: {
 	striped?: boolean;
 	hover?: boolean;
 	className?: string;
+	on?: OnEvent;
 }): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function ListGroup(
@@ -21,6 +25,7 @@ export function ListGroup(
 		striped?: boolean;
 		hover?: boolean;
 		className?: string;
+		on?: OnEvent;
 	},
 	children?: renderFnOrArrayType
 ): TemplateResult<1>;
@@ -31,6 +36,7 @@ export function ListGroup(
 		striped?: boolean;
 		hover?: boolean;
 		className?: string;
+		on?: OnEvent;
 	},
 	children?: renderFnOrArrayType
 ) {
@@ -76,6 +82,7 @@ export function ListGroup(
 	${striped}
 	${hover}
 	`;
+	const binder = createEventBinder(props?.on ?? {});
 	const render = (children: TemplateResult<1> | TemplateResult<1>[]) =>
 		LycoComponent(
 			"ListGroup",
@@ -83,7 +90,7 @@ export function ListGroup(
 				<style>
 					${css}
 				</style>
-				<ul class="${_className}">
+				<ul ${ref(binder.auto)} class="${_className}">
 					${renderFnOrArray(children, injectRender)}
 				</ul>
 			`

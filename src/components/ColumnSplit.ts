@@ -1,15 +1,24 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 export function ColumnSplit(props?: {
 	firstHeight?: string; // 第一个面板固定高度或百分比
 	gap?: string | number;
+	on?: OnEvent;
 }): WithHtml<renderFnType>;
 
 export function ColumnSplit(
 	props?: {
 		firstHeight?: string; // 第个面板固定高度或百分比
 		gap?: string | number;
+		on?: OnEvent;
 	},
 	children?: renderFnType
 ): TemplateResult<1>;
@@ -18,6 +27,7 @@ export function ColumnSplit(
 	props?: {
 		firstHeight?: string; // 第一个面板固定高度或百分比
 		gap?: string | number;
+		on?: OnEvent;
 	},
 	children?: renderFnType
 ): TemplateResult<1> | WithHtml<renderFnType> {
@@ -43,15 +53,18 @@ export function ColumnSplit(
 		topNode = renderFn(children) as any;
 	}
 
+	const binder = createEventBinder(props?.on ?? {});
+
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      gap: ${gap};
-    "
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        gap: ${gap};
+      "
 		>
 			<div style="flex: 0 0 ${firstH}; overflow: auto;">${topNode}</div>
 			<div style="flex: 1 1 auto; overflow: auto;">${bottomNode}</div>

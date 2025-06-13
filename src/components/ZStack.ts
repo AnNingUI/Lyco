@@ -1,11 +1,18 @@
 import { html, TemplateResult } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArray,
+	renderFnOrArrayType,
+} from "./core";
 
 interface ZStackProps {
 	width?: string;
 	height?: string;
 	background?: string;
 	align?: "top-left" | "top-right" | "center" | "bottom-left" | "bottom-right";
+	on?: OnEvent;
 }
 
 export function ZStack(
@@ -24,7 +31,7 @@ export function ZStack(
 	const w = props?.width ? `width: ${props.width};` : "";
 	const h = props?.height ? `height: ${props.height};` : "";
 	const bg = props?.background ? `background: ${props.background};` : "";
-
+	const binder = createEventBinder(props?.on ?? {});
 	if (children === undefined) {
 		return (children?: renderFnOrArrayType) =>
 			ZStack(props, children ?? [html``]);
@@ -57,6 +64,7 @@ export function ZStack(
 
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       position: relative;
       display: flex;

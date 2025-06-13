@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -13,6 +16,7 @@ export interface TableProps {
 	hover?: boolean;
 	bordered?: boolean;
 	className?: string;
+	on?: OnEvent;
 }
 
 export function Table(props?: TableProps): WithHtml<renderFnType>;
@@ -71,6 +75,8 @@ export function Table(
 	${bordered}
 	`;
 
+	const binder = createEventBinder(props?.on ?? {});
+
 	return LycoComponent(
 		"Table",
 		html`
@@ -78,7 +84,7 @@ export function Table(
 				${css}
 			</style>
 
-			<div class="${_className}">
+			<div ${ref(binder.auto)} class="${_className}">
 				<table>
 					${renderFn(children)}
 				</table>

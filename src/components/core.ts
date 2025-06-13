@@ -1,5 +1,7 @@
 import { html, TemplateResult } from "lit";
 
+const ___LYCO_NULL___ = Symbol("___LYCO_NULL___");
+
 export type renderFnType = TemplateResult<1> | (() => TemplateResult<1>);
 
 export type renderFnOrArrayType =
@@ -88,10 +90,16 @@ export function renderFnOrArrayOrCurry(
 	return fnOrArray ? curriedFn(fnOrArray) : curriedFn;
 }
 
-const withInit = (prefix: string) => ({
+const withInit = (
+	prefix: string
+): {
+	init: boolean;
+	prefix: string;
+	className: string | typeof ___LYCO_NULL___;
+} => ({
 	init: false,
 	prefix,
-	className: "___LYCO_NULL___",
+	className: ___LYCO_NULL___,
 });
 
 const allRandomClassName = {
@@ -106,6 +114,7 @@ const allRandomClassName = {
 	"AutoFitGrid::auto-fit-grid": withInit("auto-fit-grid"),
 	"GridCol::grid-col": withInit("grid-col"),
 	"GridRow::grid-row": withInit("grid-row"),
+	"List::list": withInit("list"),
 };
 
 export function getRandomClassName(key: keyof typeof allRandomClassName) {
@@ -114,7 +123,7 @@ export function getRandomClassName(key: keyof typeof allRandomClassName) {
 		allRandomClassName[key].init = true;
 		allRandomClassName[key].className = randomClassName(r.prefix);
 	}
-	return allRandomClassName[key].className === "___LYCO_NULL___"
+	return allRandomClassName[key].className === ___LYCO_NULL___
 		? randomClassName(r.prefix)
 		: allRandomClassName[key].className;
 }
@@ -145,11 +154,80 @@ export function LycoComponent(name: string, slot: TemplateResult<1>) {
 	componentCount[name] === undefined
 		? (componentCount[name] = { value: 0 })
 		: (componentCount[name].value = componentCount[name].value + 1);
-	console.debug(
-		`LycoComponent: ${name} - ${componentCount[name].value} - ${componentCount.all.value}`
-	);
+	// console.debug(
+	// 	`LycoComponent: ${name} - ${componentCount[name].value} - ${componentCount.all.value}`
+	// );
 	return html`
 		<!-- ${name} - ${componentCount[name].value} -->
 		${slot}
 	`;
+}
+
+// type EventType = "click" | "mousedown" | "mouseup" | "mousemove" | "touchstart" | "touchend" | "touchmove";
+
+// class OnEvent<T extends HTMLElement> {
+// 	el: T;
+// 	constructor(el: T) {
+// 		this.el = el;
+// 	}
+// 	// 具体事件 监听方法
+// 	on<K extends keyof GlobalEventHandlersEventMap>(
+// 		type: K,
+// 		listener: (this: T, ev: GlobalEventHandlersEventMap[K]) => any
+// 	): void {
+// 		(this.el as any)["on" + type] = listener;
+// 	}
+// }
+
+type EventHandler<K extends keyof GlobalEventHandlersEventMap> =
+	| ((event: GlobalEventHandlersEventMap[K]) => void)
+	| {
+			handler: (event: GlobalEventHandlersEventMap[K]) => void;
+			options?: boolean | AddEventListenerOptions;
+	  };
+
+export type OnEvent = {
+	[K in keyof GlobalEventHandlersEventMap]?: EventHandler<K>;
+};
+export function bindEvents(
+	el: EventTarget,
+	on: Array<[string, EventHandler<any>]>,
+	eventListeners: Map<string, EventListener>
+): void {
+	on.forEach(([name, entry]) => {
+		if (eventListeners.has(name)) {
+			el.removeEventListener(name, eventListeners.get(name)!);
+		}
+
+		let handler: (event: Event) => void;
+		let options: boolean | AddEventListenerOptions | undefined;
+
+		if (typeof entry === "function") {
+			handler = entry;
+			options = undefined;
+		} else {
+			handler = entry.handler;
+			options = entry.options;
+		}
+
+		const listener = (event: Event) => handler(event);
+		el.addEventListener(name, listener, options);
+		eventListeners.set(name, listener);
+	});
+}
+
+export function createEventBinder(on: OnEvent) {
+	const eventListeners = new Map<string, EventListener>();
+	const _on = Object.entries(on);
+	return {
+		bind(el: EventTarget) {
+			bindEvents(el, _on, eventListeners);
+		},
+		unbindAll() {
+			eventListeners.clear();
+		},
+		auto(el?: Element) {
+			el ? this.bind(el) : this.unbindAll();
+		},
+	};
 }

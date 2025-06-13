@@ -1,18 +1,25 @@
 import { html, TemplateResult } from "lit";
-import { type renderFnOrArrayType, renderFnOrArray } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArray,
+	renderFnOrArrayType,
+} from "./core";
 
 export function AvatarStack(props?: {
 	size?: string;
 	overlap?: string;
+	on?: OnEvent;
 }): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function AvatarStack(
-	props?: { size?: string; overlap?: string },
+	props?: { size?: string; overlap?: string; on?: OnEvent },
 	children?: renderFnOrArrayType
 ): TemplateResult<1>;
 
 export function AvatarStack(
-	props?: { size?: string; overlap?: string },
+	props?: { size?: string; overlap?: string; on?: OnEvent },
 	children?: renderFnOrArrayType
 ): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
 	if (children === undefined) {
@@ -21,6 +28,7 @@ export function AvatarStack(
 	}
 	const sz = props?.size ?? "32px";
 	const ov = props?.overlap ?? "-8px";
+	const binder = createEventBinder(props?.on ?? {});
 	const injectBox = (avatar: TemplateResult, idx?: number) => html`
 		<div
 			style="
@@ -37,7 +45,7 @@ export function AvatarStack(
 		</div>
 	`;
 	return html`
-		<div style="display: flex; align-items: center;">
+		<div ${ref(binder.auto)} style="display: flex; align-items: center;">
 			${renderFnOrArray(children, injectBox)}
 		</div>
 	`;

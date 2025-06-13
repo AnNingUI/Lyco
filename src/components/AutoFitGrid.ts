@@ -1,8 +1,11 @@
 import { html, TemplateResult } from "lit";
+import { ref } from "lit/directives/ref.js";
 import {
+	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
+	OnEvent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -11,12 +14,14 @@ import {
 export function AutoFitGrid(props: {
 	minItemWidth: string;
 	gap?: string | number;
+	on?: OnEvent;
 }): WithHtml<renderFnType>;
 
 export function AutoFitGrid(
 	props: {
 		minItemWidth: string;
 		gap?: string | number;
+		on?: OnEvent;
 	},
 	children?: renderFnType
 ): TemplateResult<1>;
@@ -25,6 +30,7 @@ export function AutoFitGrid(
 	props: {
 		minItemWidth: string;
 		gap?: string | number;
+		on?: OnEvent;
 	},
 	children?: renderFnType
 ): TemplateResult<1> | WithHtml<renderFnType> {
@@ -45,13 +51,14 @@ export function AutoFitGrid(
         gap: ${gap};
       }
     `;
+	const binder = createEventBinder(props.on ?? {});
 	return LycoComponent(
 		"AutoFitGrid",
 		html`
 			<style>
 				${css}
 			</style>
-			<div class="${_className}">${renderFn(children)}</div>
+			<div class="${_className}" ${ref(binder.auto)}>${renderFn(children)}</div>
 		`
 	);
 }

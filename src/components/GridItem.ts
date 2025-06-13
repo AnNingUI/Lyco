@@ -1,15 +1,25 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
-export function GridItem(props?: { span?: number }): WithHtml<renderFnType>;
+export function GridItem(props?: {
+	span?: number;
+	on?: OnEvent;
+}): WithHtml<renderFnType>;
 
 export function GridItem(
-	props?: { span?: number },
+	props?: { span?: number; on?: OnEvent },
 	children?: renderFnType
 ): TemplateResult<1>;
 
 export function GridItem(
-	props?: { span?: number },
+	props?: { span?: number; on?: OnEvent },
 	children?: renderFnType
 ): TemplateResult<1> | WithHtml<renderFnType> {
 	if (children === undefined) {
@@ -18,8 +28,12 @@ export function GridItem(
 			GridItem(props, html(strings, ...values));
 		return _;
 	}
+	const binder = createEventBinder(props?.on ?? {});
 	return html`
-		<div style="${props?.span ? `grid-column: span ${props.span};` : ""}">
+		<div
+			${ref(binder.auto)}
+			style="${props?.span ? `grid-column: span ${props.span};` : ""}"
+		>
 			${renderFn(children)}
 		</div>
 	`;

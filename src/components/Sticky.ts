@@ -1,10 +1,18 @@
 import { html, TemplateResult } from "lit";
-import { renderFn, renderFnType, WithHtml } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFn,
+	renderFnType,
+	WithHtml,
+} from "./core";
 
 interface StickyProps {
 	top?: string;
 	bottom?: string;
 	zIndex?: number;
+	on?: OnEvent;
 }
 
 export function Sticky(props?: StickyProps): WithHtml<renderFnType>;
@@ -28,9 +36,11 @@ export function Sticky(
 	const bottom = props?.bottom ? `bottom: ${props.bottom};` : "";
 	const z =
 		typeof props?.zIndex === "number" ? `z-index: ${props.zIndex};` : "";
+	const binder = createEventBinder(props?.on ?? {});
 
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       position: sticky;
       ${top} ${bottom}

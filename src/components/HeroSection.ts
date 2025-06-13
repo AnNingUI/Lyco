@@ -1,10 +1,17 @@
 import { html, TemplateResult } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArray,
+	renderFnOrArrayType,
+} from "./core";
 
 export function HeroSection(props?: {
 	backgroundImage?: string;
 	height?: string;
 	overlayColor?: string;
+	on?: OnEvent;
 }): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function HeroSection(
@@ -12,6 +19,7 @@ export function HeroSection(
 		backgroundImage?: string;
 		height?: string;
 		overlayColor?: string;
+		on?: OnEvent;
 	},
 	children?: renderFnOrArrayType
 ): TemplateResult<1>;
@@ -21,6 +29,7 @@ export function HeroSection(
 		backgroundImage?: string;
 		height?: string;
 		overlayColor?: string;
+		on?: OnEvent;
 	},
 	children?: renderFnOrArrayType
 ): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
@@ -33,8 +42,11 @@ export function HeroSection(
 		: "";
 	const height = props?.height ?? "400px";
 	const overlay = props?.overlayColor ?? "rgba(0, 0, 0, 0.3)";
+	const binder = createEventBinder(props?.on ?? {});
+
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       position: relative;
       width: 100%;

@@ -1,11 +1,18 @@
 import { html, TemplateResult } from "lit";
-import { renderFnOrArray, renderFnOrArrayType } from "./core";
+import { ref } from "lit/directives/ref.js";
+import {
+	createEventBinder,
+	OnEvent,
+	renderFnOrArray,
+	renderFnOrArrayType,
+} from "./core";
 
 interface CardProps {
 	padding?: string;
 	borderRadius?: string;
 	shadow?: string;
 	background?: string;
+	on?: OnEvent;
 }
 
 export function Card(
@@ -28,8 +35,10 @@ export function Card(
 	const br = props?.borderRadius ?? "8px";
 	const sd = props?.shadow ?? "0 2px 8px rgba(0,0,0,0.1)";
 	const bg = props?.background ?? "#fff";
+	const binder = createEventBinder(props?.on ?? {});
 	return html`
 		<div
+			${ref(binder.auto)}
 			style="
       background: ${bg};
       border-radius: ${br};
