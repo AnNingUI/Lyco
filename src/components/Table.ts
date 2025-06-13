@@ -84,7 +84,16 @@ export function Table(
 				${css}
 			</style>
 
-			<div ${ref(binder.auto)} class="${_className}">
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
 				<table>
 					${renderFn(children)}
 				</table>

@@ -38,7 +38,13 @@ export function Card(
 	const binder = createEventBinder(props?.on ?? {});
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
       background: ${bg};
       border-radius: ${br};

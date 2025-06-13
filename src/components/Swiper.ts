@@ -511,7 +511,16 @@ export function Swiper(
 				${css}
 			</style>
 
-			<div ${ref(binder.auto)} class="${_className}">
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
 				<div class="${_containerClassName}">
 					${_slides.map(
 						(slide, index) => html`

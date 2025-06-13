@@ -40,7 +40,13 @@ export function Sticky(
 
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
       position: sticky;
       ${top} ${bottom}

@@ -42,7 +42,13 @@ export function FooterLayout(
 	const binder = createEventBinder(props?.on ?? {});
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
       width: 100%;
       background: ${bg};

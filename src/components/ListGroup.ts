@@ -90,7 +90,16 @@ export function ListGroup(
 				<style>
 					${css}
 				</style>
-				<ul ${ref(binder.auto)} class="${_className}">
+				<ul
+					${ref((el) => {
+						if (el) {
+							binder.bind(el);
+						} else {
+							binder.unbindAll();
+						}
+					})}
+					class="${_className}"
+				>
 					${renderFnOrArray(children, injectRender)}
 				</ul>
 			`

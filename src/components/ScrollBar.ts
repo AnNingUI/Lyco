@@ -88,7 +88,18 @@ export function ScrollBar(
 			<style>
 				${css}
 			</style>
-			<div ${ref(binder.auto)} class="${_className}">${renderFn(children)}</div>
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			>
+				${renderFn(children)}
+			</div>
 		`
 	);
 }

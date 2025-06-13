@@ -57,7 +57,13 @@ export function SideBarContainer(
 
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
       display: flex;
       flex-direction: ${pos === "left" ? "row" : "row-reverse"};

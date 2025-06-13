@@ -47,10 +47,13 @@ export function Canvas(
 	// 绑定事件
 	const binder = createEventBinder(props?.on ?? {});
 	// 合并外部引用与事件绑定引用
-	const combinedRef = combineRefs(
-		initRef as RefOrCallback<Element>,
-		binder.auto
-	);
+	const combinedRef = combineRefs(initRef as RefOrCallback<Element>, (el) => {
+		if (el) {
+			binder.bind(el);
+		} else {
+			binder.unbindAll();
+		}
+	});
 	return html`
 		<canvas
 			${ref(combinedRef)}

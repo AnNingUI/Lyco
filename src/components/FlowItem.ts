@@ -26,7 +26,16 @@ export function FlowItem(
 	}
 	const binder = createEventBinder(props?.on ?? {});
 	return html`
-		<div ${ref(binder.auto)} style="break-inside: avoid; margin-bottom: 16px;">
+		<div
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
+			style="break-inside: avoid; margin-bottom: 16px;"
+		>
 			${renderFn(children)}
 		</div>
 	`;

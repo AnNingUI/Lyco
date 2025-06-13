@@ -36,7 +36,13 @@ export function LightboxContainer(
 
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;

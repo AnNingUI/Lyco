@@ -20,5 +20,14 @@ export function Divider(props?: {
 			? `width: 100%; height: ${thickness}; background: ${color}; margin: ${margin};`
 			: `width: ${thickness}; height: 100%; background: ${color}; margin: ${margin};`;
 
-	return html`<div ${ref(binder.auto)} style="${style}"></div>`;
+	return html`<div
+		${ref((el) => {
+			if (el) {
+				binder.bind(el);
+			} else {
+				binder.unbindAll();
+			}
+		})}
+		style="${style}"
+	></div>`;
 }

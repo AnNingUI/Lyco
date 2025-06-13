@@ -45,7 +45,16 @@ export function AvatarStack(
 		</div>
 	`;
 	return html`
-		<div ${ref(binder.auto)} style="display: flex; align-items: center;">
+		<div
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
+			style="display: flex; align-items: center;"
+		>
 			${renderFnOrArray(children, injectBox)}
 		</div>
 	`;

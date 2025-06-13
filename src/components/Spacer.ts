@@ -4,5 +4,14 @@ import { createEventBinder, OnEvent } from "./core";
 
 export function Spacer(props?: { on?: OnEvent }) {
 	const binder = createEventBinder(props?.on ?? {});
-	return html`<div ${ref(binder.auto)} style="flex: 1 1 auto;"></div>`;
+	return html`<div
+		${ref((el) => {
+			if (el) {
+				binder.bind(el);
+			} else {
+				binder.unbindAll();
+			}
+		})}
+		style="flex: 1 1 auto;"
+	></div>`;
 }

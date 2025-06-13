@@ -51,7 +51,13 @@ export function Badge(
 		<div style="position: relative; display: inline-block;">
 			${renderFn(children)}
 			<div
-				${ref(binder.auto)}
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
 				style="
         position: absolute;
         top: ${top};

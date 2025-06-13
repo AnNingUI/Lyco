@@ -44,7 +44,13 @@ export function Overlay(
 
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
         position: ${full ? "fixed" : "absolute"};
         top: 0; left: 0; right: 0; bottom: 0;

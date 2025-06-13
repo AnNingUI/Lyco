@@ -35,7 +35,13 @@ export function Flex(props?: FlexProps, children?: renderFnType) {
 
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
         display: flex;
         flex-direction: ${dir};

@@ -29,7 +29,13 @@ export function Grid(
 	const binder = createEventBinder(props?.on ?? {});
 	return html`
 		<div
-			${ref(binder.auto)}
+			${ref((el) => {
+				if (el) {
+					binder.bind(el);
+				} else {
+					binder.unbindAll();
+				}
+			})}
 			style="
         display: grid;
         grid-template-columns: repeat(${cols}, 1fr);

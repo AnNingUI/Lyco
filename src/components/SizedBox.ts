@@ -11,5 +11,14 @@ export function SizedBox(props?: {
 	const h = props?.height ? `height: ${props.height};` : "";
 	const binder = createEventBinder(props?.on ?? {});
 
-	return html`<div ${ref(binder.auto)} style="${w} ${h}"></div>`;
+	return html`<div
+		${ref((el) => {
+			if (el) {
+				binder.bind(el);
+			} else {
+				binder.unbindAll();
+			}
+		})}
+		style="${w} ${h}"
+	></div>`;
 }

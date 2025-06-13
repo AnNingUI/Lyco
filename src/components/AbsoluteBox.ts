@@ -45,7 +45,13 @@ export function AbsoluteBox(props?: AbsoluteBoxProps, children?: renderFnType) {
 	const render = (children?: renderFnType) => {
 		return html`
 			<div
-				${ref(binder.auto)}
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
 				class="${className}"
 				style="
       position: absolute;

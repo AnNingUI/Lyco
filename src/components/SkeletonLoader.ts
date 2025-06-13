@@ -51,7 +51,16 @@ export function SkeletonLoader(props?: {
 					: ""};
 				}
 			</style>
-			<div ${ref(binder.auto)} class="${_className}"></div>
+			<div
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+				class="${_className}"
+			></div>
 		`
 	);
 }

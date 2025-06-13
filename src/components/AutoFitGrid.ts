@@ -58,7 +58,18 @@ export function AutoFitGrid(
 			<style>
 				${css}
 			</style>
-			<div class="${_className}" ${ref(binder.auto)}>${renderFn(children)}</div>
+			<div
+				class="${_className}"
+				${ref((el) => {
+					if (el) {
+						binder.bind(el);
+					} else {
+						binder.unbindAll();
+					}
+				})}
+			>
+				${renderFn(children)}
+			</div>
 		`
 	);
 }
