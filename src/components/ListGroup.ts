@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import {
-	componentCount,
+	getComponentCount,
 	getRandomClassName,
+	LycoComponent,
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
@@ -42,10 +43,10 @@ export function ListGroup(
 	const hover = props?.hover
 		? `li:hover { background: #f1f1f1; cursor: pointer; }`
 		: "";
-	const now = componentCount.value;
+	const now = getComponentCount("ListGroup");
 	const _className =
 		props?.className ??
-		getRandomClassName("ListGroup::list-group") + `-lyco-now-${now}`;
+		getRandomClassName("ListGroup::list-group") + "-lyco-now-" + now;
 	const injectRender = (
 		children: TemplateResult<1>,
 		_idx?: number,
@@ -58,30 +59,35 @@ export function ListGroup(
 			return html` <li>${children}</li> `;
 		}
 	};
-	const render = (children: TemplateResult<1> | TemplateResult<1>[]) => html`
-		<lyco-component name="ListGroup">
-			<style>
-				ul.${_className} {
-				  list-style: none;
-				  margin: 0;
-				  padding: 0;
-				  ${bordered};
-				}
-				ul.${_className} li {
-				  padding: 12px 16px;
-				  ${props?.bordered ? "border-bottom: 1px solid #ddd" : ""};
-				}
-				ul.${_className} li:last-child {
-				  ${props?.bordered ? "border-bottom: none" : ""};
-				}
-				${striped}
-				${hover}
-			</style>
-			<ul class="${_className}">
-				${renderFnOrArray(children, injectRender)}
-			</ul>
-		</lyco-component>
+	const css = `
+	ul.${_className} {
+	  list-style: none;
+	  margin: 0;
+	  padding: 0;
+	  ${bordered};
+	}
+	ul.${_className} li {
+	  padding: 12px 16px;
+	  ${props?.bordered ? "border-bottom: 1px solid #ddd" : ""};
+	}
+	ul.${_className} li:last-child {
+	  ${props?.bordered ? "border-bottom: none" : ""};
+	}
+	${striped}
+	${hover}
 	`;
+	const render = (children: TemplateResult<1> | TemplateResult<1>[]) =>
+		LycoComponent(
+			"ListGroup",
+			html`
+				<style>
+					${css}
+				</style>
+				<ul class="${_className}">
+					${renderFnOrArray(children, injectRender)}
+				</ul>
+			`
+		);
 
 	return renderFnOrArrayOrCurry(children, render);
 }

@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import {
-	componentCount,
+	getComponentCount,
 	getRandomClassName,
+	LycoComponent,
 	renderFn,
 	renderFnType,
 	WithHtml,
@@ -26,9 +27,9 @@ export function GridCol(
 			GridCol(props, html(strings, ...values));
 		return _;
 	}
-	const now = componentCount.value;
+	const now = getComponentCount("GridCol");
 	const _className =
-		getRandomClassName("GridCol::grid-col") + +`-lyco-now-${now}`; // 生成随机类名
+		getRandomClassName("GridCol::grid-col") + "-lyco-now-" + now; // 生成随机类名
 	const gapStyle = props?.gap ? `column-gap: ${props.gap};` : "";
 	const css = `
       .${_className} {
@@ -37,12 +38,13 @@ export function GridCol(
         ${gapStyle}
       }
     `;
-	return html`
-		<lyco-component name="GridCol">
+	return LycoComponent(
+		"GridCol",
+		html`
 			<style>
 				${css}
 			</style>
 			<div class="${_className}">${renderFn(children)}</div>
-		</lyco-component>
-	`;
+		`
+	);
 }
