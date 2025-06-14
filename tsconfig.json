@@ -1,16 +1,19 @@
 {
 	"compilerOptions": {
-		"target": "ES2017",
-		"module": "ESNext",
+		"target": "es2019",
+		"lib": ["es2019", "dom", "esnext.asynciterable"],
+		"module": "esnext",
 		"declaration": true,
 		"declarationDir": "dist/types",
 		"outDir": "dist",
-		"rootDir": "src",
+		// "rootDir": "src",
 		"strict": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"useDefineForClassFields": false,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": ["src"]
+	"include": ["src", "stories"]
 }
