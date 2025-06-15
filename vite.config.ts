@@ -2,8 +2,10 @@
 import path from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+
 // https://vitejs.dev/config/
 export default defineConfig({
+	// plugins: [lit()],
 	build: {
 		// 指定库模式构建
 		lib: {
@@ -19,6 +21,7 @@ export default defineConfig({
 				"lit/decorators.js",
 				"lit/directives/ref.js",
 				"lit/directives/unsafe-svg.js",
+				"lit/directives/style-map.js",
 			],
 			output: {
 				// 为每种格式添加注释 banner（可选）

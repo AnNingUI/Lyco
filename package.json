@@ -1,9 +1,11 @@
 {
 	"name": "lyco",
-	"version": "1.2.8",
-	"description": "基于 Lit 的纯 CSS 布局渲染函数库，包含 Row/Column/Flex/Grid/拆分布局/滚动/轮播等常用渲染函数。",
+	"version": "1.3.0",
+	"description": "Lit-based pure layout rendering function library , including Row/Column/Flex/Grid and other commonly used rendering functions .",
 	"scripts": {
-		"build": "vite build"
+		"build": "vite build",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build"
 	},
 	"keywords": [
 		"lit",
@@ -13,7 +15,15 @@
 		"typescript",
 		"npm",
 		"flex",
-		"grid"
+		"grid",
+		"declarative",
+		"container",
+		"stack",
+		"center",
+		"responsive",
+		"web-components",
+		"layout-system",
+		"spacing"
 	],
 	"author": "AnNingUI <an3533581512@gmail.com>",
 	"license": "MIT",
@@ -39,6 +49,13 @@
 		"vite-plugin-dts": "^4.5.4"
 	},
 	"devDependencies": {
-		"@types/node": "^22.15.30"
+		"@chromatic-com/storybook": "3",
+		"@storybook/addon-essentials": "8.6.12",
+		"@storybook/blocks": "8.6.12",
+		"@storybook/experimental-addon-test": "8.6.12",
+		"@storybook/test": "8.6.12",
+		"@storybook/web-components": "8.6.12",
+		"@storybook/web-components-vite": "8.6.12",
+		"storybook": "8.6.12"
 	}
 }

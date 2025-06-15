@@ -10,6 +10,7 @@ import {
 	renderFnType,
 	WithHtml,
 } from "./core";
+import { MD3 } from "../theme/md3";
 
 export interface TableProps {
 	striped?: boolean;
@@ -45,30 +46,49 @@ export function Table(
 		props?.className ?? getRandomClassName("Table::table") + `-lyco-now-${now}`;
 	const striped = props?.striped
 		? `
-      .${_className} tr:nth-child(even) { background: #f9f9f9; }
+      .${_className} tr:nth-child(even) { 
+        background: ${MD3.colors.surface};
+      }
     `
 		: "";
 	const hover = props?.hover
 		? `
-      .${_className} tr:hover { background: #f1f1f1; }
+      .${_className} tr:hover { 
+        background: ${MD3.colors.primaryContainer};
+        cursor: pointer;
+      }
     `
 		: "";
 	const bordered = props?.bordered
 		? `
-      .${_className}, .${_className} th, .${_className} td { border: 1px solid #ddd; }
+      .${_className}, .${_className} th, .${_className} td { 
+        border: 1px solid ${MD3.colors.surfaceVariant}; 
+      }
     `
 		: "";
 
 	const css = `
-	/* 将表格包裹在带有 _className 的 div 里，使后续 CSS 作用于该 div 下的 table */
 	.${_className} table {
 	  width: 100%;
-	  border-collapse: collapse;
+	  border-collapse: separate;
+	  border-spacing: 0;
+	  border-radius: ${MD3.borderRadius.medium};
+	  overflow: hidden;
+	  box-shadow: ${MD3.elevation.level1};
 	}
 	.${_className} th,
 	.${_className} td {
-	  padding: 8px 12px;
+	  padding: 16px;
 	  text-align: left;
+	  transition: background ${MD3.animation.standard};
+	}
+	.${_className} th {
+	  background: ${MD3.colors.surfaceVariant};
+	  color: ${MD3.colors.onSurfaceVariant};
+	  font-weight: 500;
+	}
+	.${_className} td {
+	  border-bottom: 1px solid ${MD3.colors.surfaceVariant}; 
 	}
 	${striped}
 	${hover}

@@ -9,6 +9,7 @@ import {
 
 export function Column(props?: {
 	space?: string | number;
+	center?: boolean;
 	className?: string;
 	style?: string;
 	on?: OnEvent;
@@ -17,6 +18,7 @@ export function Column(props?: {
 export function Column(
 	props?: {
 		space?: string | number;
+		center?: boolean;
 		className?: string;
 		style?: string;
 		on?: OnEvent;
@@ -27,6 +29,7 @@ export function Column(
 export function Column(
 	props?: {
 		space?: string | number;
+		center?: boolean;
 		className?: string;
 		style?: string;
 		on?: OnEvent;
@@ -50,6 +53,7 @@ export function Column(
 			style="
       display: flex;
       flex-direction: column;
+	  ${props?.center ? "align-items: center;" : ""}
       ${props?.space ? `gap: ${props.space};` : ""}
       ${props?.style ?? ""}
     "
