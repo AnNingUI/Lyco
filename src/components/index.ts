@@ -1,3 +1,10 @@
+export {
+	Virtualizer,
+	VirtualizerController,
+	type ItemsSource,
+	type VirtualizerConfig,
+} from "./Virtualizer.labs";
+
 export { LightboxContainer } from "./LightboxContainer";
 
 export { Column } from "./Column";
@@ -15,6 +22,7 @@ export { RowSplit } from "./RowSplit";
 export { ScrollBar } from "./ScrollBar";
 export { SideBarContainer } from "./SideBarContainer";
 export { Swiper } from "./Swiper";
+export { SwitchInput } from "./SwitchInput";
 
 export { AbsoluteBox } from "./AbsoluteBox";
 export { AcrylicBar } from "./AcrylicBar";
@@ -44,11 +52,9 @@ export { Table } from "./Table";
 export { Wrap } from "./Wrap";
 export { ZStack } from "./ZStack";
 
-// // 弹窗组件
-// export { Dialog } from "./Dialog";
-// export { DialogContent } from "./DialogContent";
-// export { DialogTitle } from "./DialogTitle";
-// export { DialogActions } from "./DialogActions";
-// export { DialogButton } from "./DialogButton";
-// export { DialogCloseButton } from "./DialogCloseButton";
-// export { DialogBackdrop } from "./DialogBackdrop";
+export { Combobox } from "./Combobox";
+export { Progress } from "./Progress";
+export { Spinner } from "./Spinner";
+export { WithTooltip } from "./Tooltip";
+// 弹窗组件
+export * from "./Dialog";

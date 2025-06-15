@@ -9,16 +9,17 @@ import {
 
 export function Row(props?: {
 	space?: string | number;
+	center?: boolean;
 	on?: OnEvent;
 }): (children?: renderFnOrArrayType) => TemplateResult<1>;
 
 export function Row(
-	props?: { space?: string | number; on?: OnEvent },
+	props?: { space?: string | number; center?: boolean; on?: OnEvent },
 	children?: renderFnOrArrayType
 ): TemplateResult<1>;
 
 export function Row(
-	props?: { space?: string | number; on?: OnEvent },
+	props?: { space?: string | number; center?: boolean; on?: OnEvent },
 	children?: renderFnOrArrayType
 ): TemplateResult<1> | ((children?: renderFnOrArrayType) => TemplateResult<1>) {
 	if (children === undefined) {
@@ -37,6 +38,7 @@ export function Row(
 			style="
         display: flex;
         flex-direction: row;
+		${props?.center ? "align-items: center;" : ""}
         ${props?.space ? `gap: ${props.space};` : ""}
       "
 		>

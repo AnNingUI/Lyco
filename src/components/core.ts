@@ -107,7 +107,7 @@ const allRandomClassName = {
 	"Hidden::hidden-container": withInit("hidden-container"),
 	"ListGroup::list-group": withInit("list-group"),
 	"ScrollBar::scrollbar-container": withInit("scrollbar-container"),
-	"SkeletonLoader::skeleton-shimmer": withInit("skeleton-shimmer"),
+	"SkeletonLoader::skeleton": withInit("skeleton"),
 	"Swiper::swiper": withInit("swiper"),
 	"Table::table": withInit("table"),
 	"WaterFlow::waterflow": withInit("waterflow"),
@@ -115,6 +115,9 @@ const allRandomClassName = {
 	"GridCol::grid-col": withInit("grid-col"),
 	"GridRow::grid-row": withInit("grid-row"),
 	"List::list": withInit("list"),
+	"Dialog::dialog": withInit("dialog"),
+	"SwitchInput::switch": withInit("switch"),
+	"Combobox::combobox": withInit("combobox"),
 };
 
 export function getRandomClassName(key: keyof typeof allRandomClassName) {
@@ -195,6 +198,8 @@ export function bindEvents(
 	eventListeners: Map<string, EventListener>
 ): void {
 	on.forEach(([name, entry]) => {
+		if (!entry) return; // 添加空值检查
+
 		if (eventListeners.has(name)) {
 			el.removeEventListener(name, eventListeners.get(name)!);
 		}
@@ -209,6 +214,8 @@ export function bindEvents(
 			handler = entry.handler;
 			options = entry.options;
 		}
+
+		if (!handler) return; // 确保 handler 存在
 
 		const listener = (event: Event) => handler(event);
 		el.addEventListener(name, listener, options);
