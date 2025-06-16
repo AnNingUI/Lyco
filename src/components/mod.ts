@@ -1,3 +1,5 @@
+import { renderFnOrArray, renderFnOrArrayType } from "../core";
+
 export {
 	Virtualizer,
 	VirtualizerController,
@@ -58,3 +60,7 @@ export { Spinner } from "./Spinner";
 export { WithTooltip } from "./Tooltip";
 // 弹窗组件
 export * from "./Dialog";
+
+export function $Html(slot: renderFnOrArrayType) {
+	return renderFnOrArray(slot);
+}

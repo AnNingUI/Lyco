@@ -7,7 +7,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 interface BadgeProps {
 	content?: string | number;

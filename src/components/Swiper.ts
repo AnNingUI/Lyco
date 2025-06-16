@@ -6,7 +6,7 @@ import {
 	getRandomClassName,
 	LycoComponent,
 	OnEvent,
-} from "./core";
+} from "../core";
 
 type ScrollDirection = "x" | "y" | "both";
 type ScrollBehavior = "auto" | "smooth";

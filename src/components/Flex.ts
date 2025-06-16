@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 interface FlexProps {
 	direction?: "row" | "column";

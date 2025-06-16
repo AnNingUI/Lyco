@@ -1,6 +1,6 @@
 import { css, html, TemplateResult } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createEventBinder, OnEvent } from "./core";
+import { createEventBinder, OnEvent } from "../core";
 
 type ProgressProps = {
 	value?: number; // 主进度 (0-100)

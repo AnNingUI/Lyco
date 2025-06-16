@@ -1,6 +1,6 @@
 import { html, TemplateResult } from "lit";
 import { createRef, ref, RefOrCallback } from "lit/directives/ref.js";
-import { createEventBinder, OnEvent } from "./core";
+import { createEventBinder, OnEvent } from "../core";
 
 // 合并两个 ref 的辅助函数
 function combineRefs<T>(

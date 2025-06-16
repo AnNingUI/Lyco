@@ -2,12 +2,13 @@ import { Meta, StoryFn } from "@storybook/web-components";
 import { html } from "lit";
 import { createRef } from "lit/directives/ref.js";
 import {
+	$Html,
 	Dialog,
 	DialogActions,
 	DialogButton,
 	DialogContent,
 	DialogTitle,
-} from "../src/components";
+} from "../src/components/mod";
 
 const Template: StoryFn = (args) => {
 	const handleClose = () => {
@@ -45,29 +46,30 @@ const Template: StoryFn = (args) => {
 	`;
 };
 
-export const WithComplexContent = () => html`
-	${Dialog({ open: true }, [
-		DialogTitle({}, () => html`复杂内容示例`),
-		DialogContent({}, [
-			html`<h3>表单示例</h3>`,
-			html`<div style="margin: 16px 0;">
-				<label>用户名: </label>
-				<input type="text" />
-			</div>`,
-			html`<div style="margin: 16px 0;">
-				<label>密码: </label>
-				<input type="password" />
-			</div>`,
-		]),
-		DialogActions({}, [
-			DialogButton({}, () => html`取消`),
-			DialogButton(
-				{ variant: "contained", color: "primary" },
-				() => html`提交`
-			),
-		]),
-	])}
-`;
+export const WithComplexContent = () =>
+	$Html(
+		Dialog({ open: true }, [
+			DialogTitle({}, () => html`复杂内容示例`),
+			DialogContent({}, [
+				html`<h3>表单示例</h3>`,
+				html`<div style="margin: 16px 0;">
+					<label>用户名: </label>
+					<input type="text" />
+				</div>`,
+				html`<div style="margin: 16px 0;">
+					<label>密码: </label>
+					<input type="password" />
+				</div>`,
+			]),
+			DialogActions({}, [
+				DialogButton({}, () => html`取消`),
+				DialogButton(
+					{ variant: "contained", color: "primary" },
+					() => html`提交`
+				),
+			]),
+		])
+	);
 
 export const MultipleButtons = () => html`
 	${Dialog({ open: true }, [
@@ -85,8 +87,8 @@ export const CustomStyles = () => {
 	let isOpened = true;
 	const dRef = createRef<HTMLDialogElement>();
 	const rRef = createRef<HTMLDivElement>();
-	return html`
-		${Dialog({
+	return $Html(
+		Dialog({
 			open: isOpened,
 			proxyRef: dRef,
 			movable: rRef,
@@ -114,8 +116,8 @@ export const CustomStyles = () => {
 					variant: "contained",
 				})(html`确定`),
 			]),
-		])}
-	`;
+		])
+	);
 };
 
 const meta = {

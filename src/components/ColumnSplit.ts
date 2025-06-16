@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 export function ColumnSplit(props?: {
 	firstHeight?: string; // 第一个面板固定高度或百分比

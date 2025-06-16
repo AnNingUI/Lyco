@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 export function Center(props?: {
 	width?: string;
 	height?: string;

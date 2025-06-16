@@ -6,7 +6,7 @@ import {
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
-} from "../core";
+} from "../../core";
 
 type DialogActionsProps = {
 	className?: string;

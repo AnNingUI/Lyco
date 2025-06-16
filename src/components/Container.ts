@@ -5,7 +5,7 @@ import {
 	OnEvent,
 	renderFnOrArray,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 export type ContainerProps = {
 	maxWidth?: string;

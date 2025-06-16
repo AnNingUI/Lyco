@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnOrCurry,
 	renderFnType,
-} from "../core";
+} from "../../core";
 
 type DialogButtonProps = {
 	variant?: "text" | "contained";

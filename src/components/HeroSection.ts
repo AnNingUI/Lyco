@@ -5,7 +5,7 @@ import {
 	OnEvent,
 	renderFnOrArray,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 export function HeroSection(props?: {
 	backgroundImage?: string;

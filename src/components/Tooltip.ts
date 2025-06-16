@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnOrCurry,
 	renderFnType,
-} from "./core";
+} from "../core";
 
 export enum WithTooltipPlacement {
 	Top = "top",

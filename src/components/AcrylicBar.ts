@@ -5,7 +5,7 @@ import {
 	OnEvent,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 interface AcrylicBarProps {
 	width?: string; // 宽度，如 "300px" 或 "50%"

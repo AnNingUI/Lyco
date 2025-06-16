@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createEventBinder, OnEvent } from "./core";
+import { createEventBinder, OnEvent } from "../core";
 
 export function SizedBox(props?: {
 	width?: string;

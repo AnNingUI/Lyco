@@ -5,7 +5,7 @@ import {
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
-} from "../core";
+} from "../../core";
 
 type DialogContentProps = {
 	className?: string;

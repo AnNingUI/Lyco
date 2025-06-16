@@ -1,13 +1,13 @@
 import { html, TemplateResult } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { MD3 } from "../theme/md3";
 import {
 	createEventBinder,
 	getComponentCount,
 	getRandomClassName,
 	LycoComponent,
 	OnEvent,
-} from "./core";
+} from "../core";
+import { MD3 } from "../theme/md3";
 
 export interface SwitchInputProps {
 	checked?: boolean;

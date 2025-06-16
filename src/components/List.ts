@@ -6,7 +6,7 @@ import {
 	LycoComponent,
 	renderFnOrArray,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 // ListItem 组件
 export function ListItem(children?: renderFnOrArrayType): TemplateResult<1> {
