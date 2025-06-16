@@ -9,7 +9,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 import { MD3 } from "../theme/md3";
 
 export interface TableProps {

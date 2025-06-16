@@ -5,7 +5,7 @@ import {
 	OnEvent,
 	renderFnOrArray,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 interface AspectRatioProps {
 	ratio: number; // 宽高比，例如 16/9、4/3

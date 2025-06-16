@@ -1,6 +1,6 @@
 {
 	"name": "lyco",
-	"version": "1.3.0",
+	"version": "1.3.5",
 	"description": "Lit-based pure layout rendering function library , including Row/Column/Flex/Grid and other commonly used rendering functions .",
 	"scripts": {
 		"build": "vite build",
@@ -38,6 +38,18 @@
 	"main": "dist/index.cjs.js",
 	"module": "dist/index.es.js",
 	"types": "dist/types/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/index.es.js",
+			"require": "./dist/index.cjs.js"
+		},
+		"./basic": {
+			"types": "./dist/types/basic.d.ts",
+			"import": "./dist/basic.es.js",
+			"require": "./dist/basic.cjs.js"
+		}
+	},
 	"files": [
 		"dist",
 		"README.md",

@@ -9,7 +9,7 @@ import {
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
-} from "../core";
+} from "../../core";
 import { MD3 } from "../../theme/md3";
 
 export enum DialogPlacement {

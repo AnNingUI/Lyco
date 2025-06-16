@@ -1,9 +1,11 @@
 import { Meta } from "@storybook/web-components";
 import { html } from "lit";
-import { Progress, Row, Spinner, WithTooltip } from "../src/components";
+import { $El } from "../src/basic";
 import { Combobox } from "../src/components/Combobox";
+import { Progress, Row, Spinner, WithTooltip } from "../src/components/mod";
 import { SwitchInput } from "../src/components/SwitchInput";
 import { WithTooltipPlacement } from "../src/components/Tooltip";
+import { DashboardComponent } from "./Svg";
 
 export default {
 	title: "Example/Spinner",
@@ -155,6 +157,15 @@ export const StrokeDasharray = () => html`
 		${Spinner({ svgMode: true, strokeDasharray: "", size: "32px" })}
 		${Spinner({ svgMode: true, strokeDasharray: "5,5", size: "32px" })}
 		${Spinner({ svgMode: true, strokeDasharray: "10,5,2,5", size: "32px" })}
+		${$El.div({
+			style: "width: 32px; height: 32px;",
+			on: {
+				click() {
+					console.log("clicked");
+				},
+			},
+		})("123")}
+		${DashboardComponent()}
 		<!-- ${Progress({
 			value: 40,
 			bufferValue: 70,

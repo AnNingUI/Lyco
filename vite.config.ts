@@ -9,9 +9,12 @@ export default defineConfig({
 	build: {
 		// 指定库模式构建
 		lib: {
-			entry: path.resolve(__dirname, "src/index.ts"),
+			entry: {
+				index: path.resolve(__dirname, "src/index.ts"),
+				basic: path.resolve(__dirname, "src/basic.ts"),
+			},
 			name: "Lyco", // UMD 名称（如果需要 UMD 格式，可额外配置）
-			fileName: (format) => `index.${format}.js`,
+			fileName: (format, entryName) => `${entryName}.${format}.js`,
 			formats: ["es", "cjs"], // 仅输出 ESM + CJS
 		},
 		rollupOptions: {
@@ -22,6 +25,7 @@ export default defineConfig({
 				"lit/directives/ref.js",
 				"lit/directives/unsafe-svg.js",
 				"lit/directives/style-map.js",
+				"lit/directives/unsafe-html.js",
 			],
 			output: {
 				// 为每种格式添加注释 banner（可选）
@@ -34,6 +38,8 @@ export default defineConfig({
 		// vite-plugin-dts 用于生成类型声明文件到 dist/types
 		dts({
 			insertTypesEntry: true, // 在 dist 根目录生成 index.d.ts
+			// 忽略 stories 目录
+			exclude: ["stories"],
 			outDir: "dist/types",
 			tsconfigPath: "tsconfig.json",
 		}),

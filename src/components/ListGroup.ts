@@ -9,7 +9,7 @@ import {
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 export function ListGroup(props?: {
 	bordered?: boolean;

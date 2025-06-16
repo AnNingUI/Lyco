@@ -9,7 +9,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 export function GridRow(props?: {
 	gap?: string | number;

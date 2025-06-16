@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 export function FlowItem(props?: { on?: OnEvent }): WithHtml<renderFnType>;
 export function FlowItem(

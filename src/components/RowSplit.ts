@@ -6,7 +6,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 export function RowSplit(props?: {
 	firstWidth?: string; // 第一个面板固定宽度或百分比

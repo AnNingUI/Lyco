@@ -7,7 +7,7 @@ import {
 	getRandomClassName,
 	LycoComponent,
 	OnEvent,
-} from "./core";
+} from "../core";
 
 export function SkeletonLoader(props?: {
 	type?: "rect" | "circle";

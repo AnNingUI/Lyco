@@ -5,7 +5,7 @@ import {
 	getComponentCount,
 	LycoComponent,
 	OnEvent,
-} from "./core";
+} from "../core";
 import { MD3 } from "../theme/md3";
 
 type SpinnerProps = {

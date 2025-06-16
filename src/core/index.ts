@@ -67,7 +67,7 @@ export function renderFnOrCurry(
 }
 
 export function renderFnOrArrayOrCurry(
-	fnOrArray?: renderFnOrArrayType,
+	fnOrArray?: renderFnOrArrayType | string | number,
 	injectBox?: (
 		box: TemplateResult<1> | TemplateResult<1>[]
 	) => TemplateResult<1> | TemplateResult<1>[],
@@ -83,11 +83,19 @@ export function renderFnOrArrayOrCurry(
 	| ((
 			fnOrArray?: renderFnOrArrayType
 	  ) => TemplateResult<1> | TemplateResult<1>[]) {
+	const typeMap = {
+		string: (f?: any) => html` ${f} `,
+		number: (f?: any) => html` ${f} `,
+	};
+	const _fnOrArray =
+		typeof fnOrArray in typeMap
+			? typeMap[typeof fnOrArray as "string" | "number"]
+			: fnOrArray;
 	const _injectBox = injectBox ?? ((box) => box);
-	const curriedFn = (f?: renderFnOrArrayType) =>
-		_injectBox(renderFnOrArray(f, injectBox2)!);
+	const curriedFn = (f?: renderFnOrArrayType | string | number) =>
+		_injectBox(renderFnOrArray(f as any, injectBox2)!);
 
-	return fnOrArray ? curriedFn(fnOrArray) : curriedFn;
+	return _fnOrArray ? curriedFn(_fnOrArray) : curriedFn;
 }
 
 const withInit = (
@@ -192,6 +200,11 @@ type EventHandler<K extends keyof GlobalEventHandlersEventMap> =
 export type OnEvent = {
 	[K in keyof GlobalEventHandlersEventMap]?: EventHandler<K>;
 };
+
+export function withEvents(on: OnEvent) {
+	return on;
+}
+
 export function bindEvents(
 	el: EventTarget,
 	on: Array<[string, EventHandler<any>]>,
@@ -226,12 +239,20 @@ export function bindEvents(
 export function createEventBinder(on: OnEvent) {
 	const eventListeners = new Map<string, EventListener>();
 	const _on = Object.entries(on);
-	return {
+	const self = {
 		bind(el: EventTarget) {
 			bindEvents(el, _on, eventListeners);
 		},
 		unbindAll() {
 			eventListeners.clear();
 		},
+		auto: (e?: Element) => {
+			if (e) {
+				self.bind(e);
+			} else {
+				self.unbindAll();
+			}
+		},
 	};
+	return self;
 }

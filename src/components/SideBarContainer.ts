@@ -5,7 +5,7 @@ import {
 	OnEvent,
 	renderFnOrArray,
 	renderFnOrArrayType,
-} from "./core";
+} from "../core";
 
 export function SideBarContainer(props?: {
 	sidebarWidth?: string; // 侧边栏宽度，比如 "240px"

@@ -10,7 +10,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 export type HiddenProps = {
 	breakpoint?: string;

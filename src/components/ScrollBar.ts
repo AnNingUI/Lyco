@@ -9,7 +9,7 @@ import {
 	renderFn,
 	renderFnType,
 	WithHtml,
-} from "./core";
+} from "../core";
 
 export function ScrollBar(props?: {
 	direction?: "vertical" | "horizontal";
