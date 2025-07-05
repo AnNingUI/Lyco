@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
 import {
 	createEventBinder,
@@ -8,6 +8,7 @@ import {
 	OnEvent,
 	renderFn,
 	renderFnType,
+	Temp,
 	WithHtml,
 } from "../core";
 
@@ -19,12 +20,12 @@ export function GridCol(props?: {
 export function GridCol(
 	props?: { gap?: string | number; on?: OnEvent },
 	children?: renderFnType
-): TemplateResult<1>;
+): Temp;
 
 export function GridCol(
 	props?: { gap?: string | number; on?: OnEvent },
 	children?: renderFnType
-) {
+): Temp | WithHtml<renderFnType> {
 	if (children === undefined) {
 		const _ = (children?: renderFnType) => GridCol(props, children ?? html``);
 		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>

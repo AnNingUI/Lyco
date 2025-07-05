@@ -9,6 +9,7 @@ import {
 	renderFnOrArray,
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
+	Temp,
 } from "../core";
 
 export function ListGroup(props?: {
@@ -54,7 +55,7 @@ export function ListGroup(
 		props?.className ??
 		getRandomClassName("ListGroup::list-group") + "-lyco-now-" + now;
 	const injectRender = (
-		children: TemplateResult<1>,
+		children: Temp,
 		_idx?: number,
 		isArray?: boolean,
 		_isFunc?: boolean
@@ -83,7 +84,7 @@ export function ListGroup(
 	${hover}
 	`;
 	const binder = createEventBinder(props?.on ?? {});
-	const render = (children: TemplateResult<1> | TemplateResult<1>[]) =>
+	const render = (children: Temp | Temp[]) =>
 		LycoComponent(
 			"ListGroup",
 			html`

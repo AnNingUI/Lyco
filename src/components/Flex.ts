@@ -1,10 +1,11 @@
-import { html, TemplateResult } from "lit";
+import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
 import {
 	createEventBinder,
 	OnEvent,
 	renderFn,
 	renderFnType,
+	Temp,
 	WithHtml,
 } from "../core";
 
@@ -18,17 +19,17 @@ interface FlexProps {
 
 export function Flex(props?: FlexProps): WithHtml<renderFnType>;
 
+export function Flex(props?: FlexProps, children?: renderFnType): Temp;
+
 export function Flex(
 	props?: FlexProps,
 	children?: renderFnType
-): TemplateResult<1>;
-
-export function Flex(props?: FlexProps, children?: renderFnType) {
+): Temp | WithHtml<renderFnType> {
 	if (children === undefined) {
 		const _ = (children: renderFnType) => Flex(props, children ?? html``);
 		_.html = (strings: TemplateStringsArray, ...values: unknown[]) =>
 			Flex(props, html(strings, ...values));
-		return _;
+		return _ as WithHtml<renderFnType>;
 	}
 	const dir = props?.direction ?? "row";
 	const binder = createEventBinder(props?.on ?? {});
