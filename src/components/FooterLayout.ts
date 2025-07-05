@@ -1,11 +1,12 @@
 // FooterLayout.ts
-import { html, TemplateResult } from "lit";
+import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
 import {
 	createEventBinder,
 	OnEvent,
 	renderFn,
 	renderFnType,
+	Temp,
 	WithHtml,
 } from "../core";
 
@@ -22,12 +23,12 @@ export function FooterLayout(props?: FooterLayoutProps): WithHtml<renderFnType>;
 export function FooterLayout(
 	props?: FooterLayoutProps,
 	children?: renderFnType
-): TemplateResult<1>;
+): Temp;
 
 export function FooterLayout(
 	props?: FooterLayoutProps,
 	children?: renderFnType
-) {
+): WithHtml<renderFnType> | Temp {
 	if (children === undefined) {
 		const _ = (children?: renderFnType) =>
 			FooterLayout(props, children ?? html``);

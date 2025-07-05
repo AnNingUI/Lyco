@@ -42,6 +42,7 @@ export function Column(
 	}
 	return html`
 		<div
+			.class="${props?.className}"
 			${ref((el) => {
 				if (el) {
 					binder.bind(el);
@@ -49,7 +50,6 @@ export function Column(
 					binder.unbindAll();
 				}
 			})}
-			.class="${props?.className}"
 			style="
       display: flex;
       flex-direction: column;

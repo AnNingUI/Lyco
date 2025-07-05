@@ -53,7 +53,7 @@ export { Sticky } from "./Sticky";
 export { Table } from "./Table";
 export { Wrap } from "./Wrap";
 export { ZStack } from "./ZStack";
-
+export { LazyForEach } from "./LazyForEach";
 export { Combobox } from "./Combobox";
 export { Progress } from "./Progress";
 export { Spinner } from "./Spinner";

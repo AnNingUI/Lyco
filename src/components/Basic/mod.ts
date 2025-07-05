@@ -7,6 +7,7 @@ import {
 	renderFnOrArrayOrCurry,
 	renderFnOrArrayType,
 } from "../../core";
+import { iw } from "./utils";
 
 type HTMLEl =
 	| HTMLElementTagNameMap
@@ -104,6 +105,12 @@ type ElementFunction<
 	): TemplateResult<1>;
 };
 
+const isLitTemplate = (content: unknown) => {
+	return (
+		content !== null && typeof content === "object" && "_$litType$" in content
+	);
+};
+
 // 创建一个HTML元素渲染函数工厂
 function createElementRenderer<K extends keyof HTMLElementTagNameMap, Add>(
 	tag: K,
@@ -111,21 +118,21 @@ function createElementRenderer<K extends keyof HTMLElementTagNameMap, Add>(
 ) {
 	return (props?: BasicHtmlProps<K, Add>, content?: unknown) => {
 		const _props = (props ?? {}) as BasicHtmlProps<K, Add>;
-		const element = document.createElement(tag);
 		const binder = createEventBinder(_props?.on ?? {});
 		const injectFields = props?.injectFields ?? ((ref) => {});
 		const add = addPropsType ?? new Set();
-		// 应用所有属性
-		_props.className && (element.className = _props.className);
-		_props.id && (element.id = _props.id);
-		_props.style && (element.style.cssText = createStyle(_props.style));
-		_props.title && (element.title = _props.title);
-		_props.lang && (element.lang = _props.lang);
-		_props.dir && (element.dir = _props.dir);
-		_props.role && (element.role = _props.role);
-		_props.ariaLabel && (element.ariaLabel = _props.ariaLabel);
-		_props.ariaHidden && (element.ariaHidden = _props.ariaHidden);
-		_props.key && element.setAttribute("data-key", _props.key.toString());
+		const element = iw(document.createElement(tag)).let((it) => {
+			_props.className && (it.className = _props.className);
+			_props.id && (it.id = _props.id);
+			_props.style && (it.style.cssText = createStyle(_props.style));
+			_props.title && (it.title = _props.title);
+			_props.lang && (it.lang = _props.lang);
+			_props.dir && (it.dir = _props.dir);
+			_props.role && (it.role = _props.role);
+			_props.ariaLabel && (it.ariaLabel = _props.ariaLabel);
+			_props.ariaHidden && (it.ariaHidden = _props.ariaHidden);
+			_props.key && it.setAttribute("data-key", _props.key.toString());
+		});
 		add.forEach((key) => {
 			if (_props[key]) {
 				(element as any)[key] = _props[key];
@@ -151,17 +158,7 @@ function createElementRenderer<K extends keyof HTMLElementTagNameMap, Add>(
 		injectFields(element);
 
 		// 处理内容
-		if (
-			content !== null &&
-			typeof content === "object" &&
-			"_$litType$" in content
-		) {
-			// 渲染Lit模板
-			render(content as TemplateResult<1>, element);
-		} else {
-			// 设置文本内容
-			element.textContent = `${content ?? ""}`;
-		}
+		render(content, element);
 
 		// 创建一个包装节点，用于管理生命周期
 		const wrapper = document.createElement("div");
@@ -181,22 +178,24 @@ function createMathMLElementRenderer<
 >(tag: K, addPropsType?: Set<keyof Add>) {
 	return (_props?: BasicMathMLProps<K, Add>, content?: unknown) => {
 		const props = _props ?? ({} as BasicMathMLProps<K, Add>);
-		const element = document.createElementNS(
-			"http://www.w3.org/1998/Math/MathML",
-			tag
-		);
+
 		const binder = createEventBinder(props.on ?? {});
 		const injectFields = props?.injectFields ?? ((ref) => {});
 		const add = addPropsType ?? new Set();
 		// 应用属性
-		props.className && (element.className = props.className);
-		props.id && (element.id = props.id);
-		props.style && (element.style.cssText = createStyle(props.style));
-		props.display && element.setAttribute("display", props.display);
-		props.key && element.setAttribute("data-key", props.key.toString());
-		props.mathbackground &&
-			element.setAttribute("mathbackground", props.mathbackground);
-		props.mathcolor && element.setAttribute("mathcolor", props.mathcolor);
+		const element = iw(
+			document.createElementNS("http://www.w3.org/1998/Math/MathML", tag)
+		).let((it) => {
+			props.className && (it.className = props.className);
+			props.id && (it.id = props.id);
+			props.style && (it.style.cssText = createStyle(props.style));
+			props.display && it.setAttribute("display", props.display);
+			props.key && it.setAttribute("data-key", props.key.toString());
+			props.mathbackground &&
+				it.setAttribute("mathbackground", props.mathbackground);
+			props.mathcolor && it.setAttribute("mathcolor", props.mathcolor);
+		});
+
 		add.forEach((key) => {
 			if (props[key]) {
 				(element as any)[key] = props[key];
@@ -235,24 +234,28 @@ function createSVGElementRenderer<K extends keyof SVGElementTagNameMap, Add>(
 ) {
 	return (_props?: BasicSVGProps<K, Add>, content?: unknown) => {
 		const props = _props ?? ({} as BasicSVGProps<K, Add>);
-		const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
 		const binder = createEventBinder(props.on ?? {});
 		const injectFields = props?.injectFields ?? ((ref) => {});
 		const add = addPropsType ?? new Set();
 
-		// 应用SVG属性
-		props.className && element.setAttribute("class", props.className);
-		props.id && (element.id = props.id);
-		props.style && (element.style.cssText = createStyle(props.style));
-		props.fill && element.setAttribute("fill", props.fill);
-		props.stroke && element.setAttribute("stroke", props.stroke);
-		props.key && element.setAttribute("data-key", props.key.toString());
-		props.strokeWidth &&
-			element.setAttribute("stroke-width", props.strokeWidth.toString());
-		props.viewBox && element.setAttribute("viewBox", props.viewBox);
-		props.transform && element.setAttribute("transform", props.transform);
-		props.opacity !== undefined &&
-			element.setAttribute("opacity", props.opacity.toString());
+		const element = iw(
+			document.createElementNS("http://www.w3.org/2000/svg", tag)
+		).let((it) => {
+			// 应用SVG属性
+			props.className && it.setAttribute("class", props.className);
+			props.id && (it.id = props.id);
+			props.style && (it.style.cssText = createStyle(props.style));
+			props.fill && it.setAttribute("fill", props.fill);
+			props.stroke && it.setAttribute("stroke", props.stroke);
+			props.key && it.setAttribute("data-key", props.key.toString());
+			props.strokeWidth &&
+				it.setAttribute("stroke-width", props.strokeWidth.toString());
+			props.viewBox && it.setAttribute("viewBox", props.viewBox);
+			props.transform && it.setAttribute("transform", props.transform);
+			props.opacity !== undefined &&
+				it.setAttribute("opacity", props.opacity.toString());
+		});
+
 		add.forEach((key) => {
 			if (props[key]) {
 				const value = props[key];
