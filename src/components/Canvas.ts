@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html, LitElement, TemplateResult } from "lit";
 import { createRef, ref, RefOrCallback } from "lit/directives/ref.js";
 import { createEventBinder, OnEvent } from "../core";
 
@@ -51,4 +51,16 @@ export function Canvas(
 			style=${props?.style ?? ""}
 		></canvas>
 	`;
+}
+
+export function CanvasOnce(
+	elementThis: LitElement,
+	initCanvas: () => TemplateResult<1>
+): TemplateResult<1> {
+	if ((elementThis as any).$__LYCO_INIT_CANVAS__$) {
+		return (elementThis as any).$__LYCO_INIT_CANVAS__$ as TemplateResult<1>;
+	} else {
+		(elementThis as any).$__LYCO_INIT_CANVAS__$ = initCanvas();
+		return (elementThis as any).$__LYCO_INIT_CANVAS__$ as TemplateResult<1>;
+	}
 }
