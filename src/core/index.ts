@@ -144,7 +144,7 @@ export function getComponentCount(name: string) {
 	return componentCount[name].value;
 }
 
-export function LycoComponent(name: string, slot: Temp) {
+export function LycoComponent(name: string, slot: Temp | Temp[]) {
 	componentCount.all = {
 		value: componentCount.all.value + 1,
 	};

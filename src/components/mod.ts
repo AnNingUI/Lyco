@@ -1,4 +1,4 @@
-import { renderFnOrArray, renderFnOrArrayType } from "../core";
+import { renderFnOrArray, renderFnOrArrayType, Temp } from "../core";
 
 export {
 	Virtualizer,
@@ -32,7 +32,7 @@ export { AspectRatio } from "./AspectRatio";
 export { AutoFitGrid } from "./AutoFitGrid";
 export { AvatarStack } from "./AvatarStack";
 export { Badge } from "./Badge";
-export { Canvas, CanvasOnce } from "./Canvas";
+export { Canvas } from "./Canvas";
 export { Card } from "./Card";
 export { Center } from "./Center";
 export { Combobox } from "./Combobox";
@@ -63,4 +63,22 @@ export * from "./Dialog";
 
 export function $Html(slot: renderFnOrArrayType) {
 	return renderFnOrArray(slot);
+}
+
+export function $Once(
+	self: HTMLElement,
+	slot: () => Temp | Temp[],
+	slotKey?: string
+): Temp {
+	const _self = self as any;
+
+	// Use the provided slotKey or generate one based on the stringified slot function
+	const key = slotKey || `__LYCO_ONCE_CACHE_${slot.toString()}__`;
+
+	if (!_self[key]) {
+		_self[key] = slot();
+		return _self[key];
+	} else {
+		return _self[key];
+	}
 }
